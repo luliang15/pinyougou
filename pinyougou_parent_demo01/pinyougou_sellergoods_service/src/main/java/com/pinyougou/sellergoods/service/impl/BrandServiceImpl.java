@@ -12,8 +12,16 @@ import java.util.List;
 public class BrandServiceImpl implements BrandService {
     @Autowired
     private TbBrandMapper brandMapper;
+
+    /***
+     * 查询所有
+     * @return
+     */
     @Override
     public List<TbBrand> findAll() {
         return brandMapper.select(null);
     }
+
+
+
 }
