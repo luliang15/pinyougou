@@ -17,6 +17,8 @@
             <groupId>com.github.abel533</groupId>
             <artifactId>mapper</artifactId>
         </dependency>
+        <!--分页依赖-->
+        <!--分页工具-->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper</artifactId>
