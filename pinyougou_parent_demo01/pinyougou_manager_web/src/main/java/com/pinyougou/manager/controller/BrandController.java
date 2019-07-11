@@ -62,4 +62,42 @@ public class BrandController {
         }
     }
 
+    /***
+     * 根据id查找数据
+     * @param id
+     * @return
+     */
+    @RequestMapping("getById")
+    public TbBrand getById(Long id){
+        return  brandService.getById(id);
+    }
+
+    /***
+     * 修改品牌
+     * @param brand
+     * @return
+     */
+    @RequestMapping("update")
+    public Result update(@RequestBody TbBrand brand){
+        try {
+            //进行修改
+            brandService.update(brand);
+            return  new Result(true,"修改品牌成功");
+        } catch (Exception e) {
+            logger.error("修改品牌出现异常",e);
+            return new Result(false,"修改品牌失败");
+        }
+
+    }
+    @RequestMapping("delete")
+    public Result delete(Long[] ids){
+        try {
+            brandService.delete(ids);
+            return new Result(true,"删除品牌成功");
+        } catch (Exception e) {
+            logger.error("删除品牌出现异常",e);
+            return new Result(false,"删除品牌成功");
+        }
+    }
+
 }

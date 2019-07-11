@@ -11,6 +11,7 @@ import java.util.List;
 public interface BrandService {
     /**
      * 查询所有品牌
+     *
      * @return
      */
     public List<TbBrand> findAll();
@@ -22,11 +23,32 @@ public interface BrandService {
      * @param pageSize
      * @return
      */
-    public PageResult<TbBrand> findPage(int pageNum,int pageSize);
+    public PageResult<TbBrand> findPage(int pageNum, int pageSize);
+
     /**
      * 新增品牌
+     *
      * @param brand
      */
     public void add(TbBrand brand);
 
+    /***
+     * 根据id进行查询数据
+     * @param id
+     * @return
+     */
+    public TbBrand getById(Long id);
+
+    /***
+     * 修改品牌
+     * @param brand
+     */
+    public void update(TbBrand brand);
+
+    /***
+     * 根据id列表进行删除
+     * 删除品牌
+     * @param ids
+     */
+    public void delete(Long[] ids);
 }
