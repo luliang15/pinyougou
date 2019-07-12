@@ -2,67 +2,72 @@ package com.pinyougou.sellergoods.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
-import com.pinyougoou.BrandService;
+import com.pinyougoou.AreasService;
 import com.pinyougou.entity.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.abel533.entity.Example;
 import com.github.pagehelper.PageInfo;
-
 import com.github.pagehelper.PageHelper;
-import com.pinyougou.mapper.TbBrandMapper;
-import com.pinyougou.pojo.TbBrand;
+import com.pinyougou.mapper.TbAreasMapper;
+import com.pinyougou.pojo.TbAreas;
+
+
 /**
  * 业务逻辑实现
  * @author Steven
  *
  */
 @Service
-public class BrandServiceImpl implements BrandService {
+public class AreasServiceImpl implements AreasService {
 
 	@Autowired
-	private TbBrandMapper brandMapper;
+	private TbAreasMapper areasMapper;
 	
 	/**
 	 * 查询全部
 	 */
 	@Override
-	public List<TbBrand> findAll() {
-		return brandMapper.select(null);
+	public List<TbAreas> findAll() {
+		return areasMapper.select(null);
 	}
 
 	/**
 	 * 按分页查询
 	 */
 	@Override
-	public PageResult findPage(int pageNum, int pageSize, TbBrand brand) {
-		PageResult<TbBrand> result = new PageResult<TbBrand>();
+	public PageResult findPage(int pageNum, int pageSize, TbAreas areas) {
+		PageResult<TbAreas> result = new PageResult<TbAreas>();
         //设置分页条件
         PageHelper.startPage(pageNum, pageSize);
 
         //构建查询条件
-        Example example = new Example(TbBrand.class);
+        Example example = new Example(TbAreas.class);
         Example.Criteria criteria = example.createCriteria();
 		
-		if(brand!=null){			
+		if(areas!=null){			
 						//如果字段不为空
-			if (brand.getName()!=null && brand.getName().length()>0) {
-				criteria.andLike("name", "%" + brand.getName() + "%");
+			if (areas.getAreaid()!=null && areas.getAreaid().length()>0) {
+				criteria.andLike("areaid", "%" + areas.getAreaid() + "%");
 			}
 			//如果字段不为空
-			if (brand.getFirstChar()!=null && brand.getFirstChar().length()>0) {
-				criteria.andLike("firstChar", "%" + brand.getFirstChar() + "%");
+			if (areas.getArea()!=null && areas.getArea().length()>0) {
+				criteria.andLike("area", "%" + areas.getArea() + "%");
+			}
+			//如果字段不为空
+			if (areas.getCityid()!=null && areas.getCityid().length()>0) {
+				criteria.andLike("cityid", "%" + areas.getCityid() + "%");
 			}
 	
 		}
 
         //查询数据
-        List<TbBrand> list = brandMapper.selectByExample(example);
+        List<TbAreas> list = areasMapper.selectByExample(example);
         //返回数据列表
         result.setRows(list);
 
         //获取总页数
-        PageInfo<TbBrand> info = new PageInfo<TbBrand>(list);
+        PageInfo<TbAreas> info = new PageInfo<TbAreas>(list);
         result.setPages(info.getPages());
 		
 		return result;
@@ -72,8 +77,8 @@ public class BrandServiceImpl implements BrandService {
 	 * 增加
 	 */
 	@Override
-	public void add(TbBrand brand) {
-		brandMapper.insertSelective(brand);		
+	public void add(TbAreas areas) {
+		areasMapper.insertSelective(areas);		
 	}
 
 	
@@ -81,8 +86,8 @@ public class BrandServiceImpl implements BrandService {
 	 * 修改
 	 */
 	@Override
-	public void update(TbBrand brand){
-		brandMapper.updateByPrimaryKeySelective(brand);
+	public void update(TbAreas areas){
+		areasMapper.updateByPrimaryKeySelective(areas);
 	}	
 	
 	/**
@@ -91,8 +96,8 @@ public class BrandServiceImpl implements BrandService {
 	 * @return
 	 */
 	@Override
-	public TbBrand getById(Long id){
-		return brandMapper.selectByPrimaryKey(id);
+	public TbAreas getById(Long id){
+		return areasMapper.selectByPrimaryKey(id);
 	}
 
 	/**
@@ -103,12 +108,12 @@ public class BrandServiceImpl implements BrandService {
 		//数组转list
         List longs = Arrays.asList(ids);
         //构建查询条件
-        Example example = new Example(TbBrand.class);
+        Example example = new Example(TbAreas.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andIn("id", longs);
 
         //跟据查询条件删除数据
-        brandMapper.deleteByExample(example);
+        areasMapper.deleteByExample(example);
 	}
 	
 	

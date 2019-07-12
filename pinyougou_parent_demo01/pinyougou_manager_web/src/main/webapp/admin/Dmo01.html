@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>删除提示</title>
+    <script src="../plugins/Vue/vuejs-2.5.16.js"></script>
+</head>
+
+<body>
+<div id="app">
+    <template>
+        <div>
+            <b-alert
+                    :show="dismissCountDown"
+                    dismissible
+                    variant="warning"
+                    @dismissed="dismissCountDown=0"
+                    @dismiss-count-down="countDownChanged"
+            >
+                This alert will dismiss after {{ dismissCountDown }} seconds...
+            </b-alert>
+            <b-button @click="showAlert" variant="info" class="m-1">
+                Show alert with count-down timer
+            </b-button>
+        </div>
+    </template>
+</div>
+</body>
+<script>
+    export default {
+        data() {
+            return {
+                dismissSecs: 5,
+                dismissCountDown: 0
+            }
+        },
+        methods: {
+            countDownChanged(dismissCountDown) {
+                this.dismissCountDown = dismissCountDown
+            },
+            showAlert() {
+                this.dismissCountDown = this.dismissSecs
+            }
+        }
+    }
+</script>
+</html>

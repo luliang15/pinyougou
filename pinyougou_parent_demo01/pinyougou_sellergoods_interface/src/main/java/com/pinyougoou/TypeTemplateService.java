@@ -2,38 +2,40 @@ package com.pinyougoou;
 import java.util.List;
 
 import com.pinyougou.entity.PageResult;
-import com.pinyougou.pojo.TbBrand;
+import com.pinyougou.pojo.TbTypeTemplate;
+
+
 /**
  * 业务逻辑接口
  * @author Steven
  *
  */
-public interface BrandService {
+public interface TypeTemplateService {
 
 	/**
 	 * 返回全部列表
 	 * @return
 	 */
-	public List<TbBrand> findAll();
+	public List<TbTypeTemplate> findAll();
 	
 	
 	/**
      * 分页查询列表
      * @return
      */
-    public PageResult<TbBrand> findPage(int pageNum, int pageSize, TbBrand brand);
+    public PageResult<TbTypeTemplate> findPage(int pageNum, int pageSize, TbTypeTemplate typeTemplate);
 	
 	
 	/**
 	 * 增加
 	*/
-	public void add(TbBrand brand);
+	public void add(TbTypeTemplate typeTemplate);
 	
 	
 	/**
 	 * 修改
 	 */
-	public void update(TbBrand brand);
+	public void update(TbTypeTemplate typeTemplate);
 	
 
 	/**
@@ -41,7 +43,7 @@ public interface BrandService {
 	 * @param id
 	 * @return
 	 */
-	public TbBrand getById(Long id);
+	public TbTypeTemplate getById(Long id);
 	
 	
 	/**

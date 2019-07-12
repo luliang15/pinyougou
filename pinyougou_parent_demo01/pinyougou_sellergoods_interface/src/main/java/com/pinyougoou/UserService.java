@@ -1,39 +1,38 @@
 package com.pinyougoou;
 import java.util.List;
-
 import com.pinyougou.entity.PageResult;
-import com.pinyougou.pojo.TbBrand;
+import com.pinyougou.pojo.TbUser;
 /**
  * 业务逻辑接口
  * @author Steven
  *
  */
-public interface BrandService {
+public interface UserService {
 
 	/**
 	 * 返回全部列表
 	 * @return
 	 */
-	public List<TbBrand> findAll();
+	public List<TbUser> findAll();
 	
 	
 	/**
      * 分页查询列表
      * @return
      */
-    public PageResult<TbBrand> findPage(int pageNum, int pageSize, TbBrand brand);
+    public PageResult<TbUser> findPage(int pageNum, int pageSize, TbUser user);
 	
 	
 	/**
 	 * 增加
 	*/
-	public void add(TbBrand brand);
+	public void add(TbUser user);
 	
 	
 	/**
 	 * 修改
 	 */
-	public void update(TbBrand brand);
+	public void update(TbUser user);
 	
 
 	/**
@@ -41,7 +40,7 @@ public interface BrandService {
 	 * @param id
 	 * @return
 	 */
-	public TbBrand getById(Long id);
+	public TbUser getById(Long id);
 	
 	
 	/**

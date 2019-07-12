@@ -2,38 +2,40 @@ package com.pinyougoou;
 import java.util.List;
 
 import com.pinyougou.entity.PageResult;
-import com.pinyougou.pojo.TbBrand;
+import com.pinyougou.pojo.TbPayLog;
+
+
 /**
  * 业务逻辑接口
  * @author Steven
  *
  */
-public interface BrandService {
+public interface PayLogService {
 
 	/**
 	 * 返回全部列表
 	 * @return
 	 */
-	public List<TbBrand> findAll();
+	public List<TbPayLog> findAll();
 	
 	
 	/**
      * 分页查询列表
      * @return
      */
-    public PageResult<TbBrand> findPage(int pageNum, int pageSize, TbBrand brand);
+    public PageResult findPage(int pageNum, int pageSize, TbPayLog payLog);
 	
 	
 	/**
 	 * 增加
 	*/
-	public void add(TbBrand brand);
+	public void add(TbPayLog payLog);
 	
 	
 	/**
 	 * 修改
 	 */
-	public void update(TbBrand brand);
+	public void update(TbPayLog payLog);
 	
 
 	/**
@@ -41,7 +43,7 @@ public interface BrandService {
 	 * @param id
 	 * @return
 	 */
-	public TbBrand getById(Long id);
+	public TbPayLog getById(Long id);
 	
 	
 	/**

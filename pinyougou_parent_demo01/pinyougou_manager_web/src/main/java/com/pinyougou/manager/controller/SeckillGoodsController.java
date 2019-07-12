@@ -1,14 +1,14 @@
 package com.pinyougou.manager.controller;
 import java.util.List;
 
-import com.pinyougoou.BrandService;
+import com.pinyougoou.SeckillGoodsService;
 import com.pinyougou.entity.PageResult;
 import com.pinyougou.entity.Result;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.pinyougou.pojo.TbBrand;
+import com.pinyougou.pojo.TbSeckillGoods;
 
 /**
  * 请求处理器
@@ -16,19 +16,19 @@ import com.pinyougou.pojo.TbBrand;
  *
  */
 @RestController
-@RequestMapping("/brand")
-public class BrandController {
+@RequestMapping("/seckillGoods")
+public class SeckillGoodsController {
 
 	@Reference
-	private BrandService brandService;
+	private SeckillGoodsService seckillGoodsService;
 	
 	/**
 	 * 返回全部列表
 	 * @return
 	 */
 	@RequestMapping("/findAll")
-	public List<TbBrand> findAll(){			
-		return brandService.findAll();
+	public List<TbSeckillGoods> findAll(){			
+		return seckillGoodsService.findAll();
 	}
 	
 	
@@ -37,19 +37,19 @@ public class BrandController {
 	 * @return
 	 */
 	@RequestMapping("/findPage")
-	public PageResult findPage(int pageNo, int pageSize, @RequestBody TbBrand brand){
-		return brandService.findPage(pageNo, pageSize,brand);
+	public PageResult findPage(int pageNo, int pageSize, @RequestBody TbSeckillGoods seckillGoods){
+		return seckillGoodsService.findPage(pageNo, pageSize,seckillGoods);
 	}
 	
 	/**
 	 * 增加
-	 * @param brand
+	 * @param seckillGoods
 	 * @return
 	 */
 	@RequestMapping("/add")
-	public Result add(@RequestBody TbBrand brand){
+	public Result add(@RequestBody TbSeckillGoods seckillGoods){
 		try {
-			brandService.add(brand);
+			seckillGoodsService.add(seckillGoods);
 			return new Result(true, "增加成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -59,13 +59,13 @@ public class BrandController {
 	
 	/**
 	 * 修改
-	 * @param brand
+	 * @param seckillGoods
 	 * @return
 	 */
 	@RequestMapping("/update")
-	public Result update(@RequestBody TbBrand brand){
+	public Result update(@RequestBody TbSeckillGoods seckillGoods){
 		try {
-			brandService.update(brand);
+			seckillGoodsService.update(seckillGoods);
 			return new Result(true, "修改成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -79,8 +79,8 @@ public class BrandController {
 	 * @return
 	 */
 	@RequestMapping("/getById")
-	public TbBrand getById(Long id){
-		return brandService.getById(id);		
+	public TbSeckillGoods getById(Long id){
+		return seckillGoodsService.getById(id);		
 	}
 	
 	/**
@@ -91,7 +91,7 @@ public class BrandController {
 	@RequestMapping("/delete")
 	public Result delete(Long [] ids){
 		try {
-			brandService.delete(ids);
+			seckillGoodsService.delete(ids);
 			return new Result(true, "删除成功"); 
 		} catch (Exception e) {
 			e.printStackTrace();

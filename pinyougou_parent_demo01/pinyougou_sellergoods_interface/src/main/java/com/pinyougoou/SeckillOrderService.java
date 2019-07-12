@@ -2,38 +2,40 @@ package com.pinyougoou;
 import java.util.List;
 
 import com.pinyougou.entity.PageResult;
-import com.pinyougou.pojo.TbBrand;
+import com.pinyougou.pojo.TbSeckillOrder;
+
+
 /**
  * 业务逻辑接口
  * @author Steven
  *
  */
-public interface BrandService {
+public interface SeckillOrderService {
 
 	/**
 	 * 返回全部列表
 	 * @return
 	 */
-	public List<TbBrand> findAll();
+	public List<TbSeckillOrder> findAll();
 	
 	
 	/**
      * 分页查询列表
      * @return
      */
-    public PageResult<TbBrand> findPage(int pageNum, int pageSize, TbBrand brand);
+    public PageResult<TbSeckillOrder> findPage(int pageNum, int pageSize, TbSeckillOrder seckillOrder);
 	
 	
 	/**
 	 * 增加
 	*/
-	public void add(TbBrand brand);
+	public void add(TbSeckillOrder seckillOrder);
 	
 	
 	/**
 	 * 修改
 	 */
-	public void update(TbBrand brand);
+	public void update(TbSeckillOrder seckillOrder);
 	
 
 	/**
@@ -41,7 +43,7 @@ public interface BrandService {
 	 * @param id
 	 * @return
 	 */
-	public TbBrand getById(Long id);
+	public TbSeckillOrder getById(Long id);
 	
 	
 	/**
