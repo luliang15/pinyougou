@@ -1,5 +1,6 @@
 package com.pinyougou.sellergoods.service.impl;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import com.pinyougoou.SellerService;
@@ -8,12 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.abel533.entity.Example;
 import com.github.pagehelper.PageInfo;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.pinyougou.mapper.TbSellerMapper;
 import com.pinyougou.pojo.TbSeller;
-
-
 /**
  * 业务逻辑实现
  * @author Steven
@@ -24,7 +22,7 @@ public class SellerServiceImpl implements SellerService {
 
 	@Autowired
 	private TbSellerMapper sellerMapper;
-	
+
 	/**
 	 * 查询全部
 	 */
@@ -39,15 +37,15 @@ public class SellerServiceImpl implements SellerService {
 	@Override
 	public PageResult findPage(int pageNum, int pageSize, TbSeller seller) {
 		PageResult<TbSeller> result = new PageResult<TbSeller>();
-        //设置分页条件
-        PageHelper.startPage(pageNum, pageSize);
+		//设置分页条件
+		PageHelper.startPage(pageNum, pageSize);
 
-        //构建查询条件
-        Example example = new Example(TbSeller.class);
-        Example.Criteria criteria = example.createCriteria();
-		
-		if(seller!=null){			
-						//如果字段不为空
+		//构建查询条件
+		Example example = new Example(TbSeller.class);
+		Example.Criteria criteria = example.createCriteria();
+
+		if(seller!=null){
+			//如果字段不为空
 			if (seller.getSellerId()!=null && seller.getSellerId().length()>0) {
 				criteria.andLike("sellerId", "%" + seller.getSellerId() + "%");
 			}
@@ -135,18 +133,18 @@ public class SellerServiceImpl implements SellerService {
 			if (seller.getBankName()!=null && seller.getBankName().length()>0) {
 				criteria.andLike("bankName", "%" + seller.getBankName() + "%");
 			}
-	
+
 		}
 
-        //查询数据
-        List<TbSeller> list = sellerMapper.selectByExample(example);
-        //返回数据列表
-        result.setRows(list);
+		//查询数据
+		List<TbSeller> list = sellerMapper.selectByExample(example);
+		//返回数据列表
+		result.setRows(list);
 
-        //获取总页数
-        PageInfo<TbSeller> info = new PageInfo<TbSeller>(list);
-        result.setPages(info.getPages());
-		
+		//获取总页数
+		PageInfo<TbSeller> info = new PageInfo<TbSeller>(list);
+		result.setPages(info.getPages());
+
 		return result;
 	}
 
@@ -155,27 +153,30 @@ public class SellerServiceImpl implements SellerService {
 	 */
 	@Override
 	public void add(TbSeller seller) {
-		sellerMapper.insertSelective(seller);		
+		seller.setStatus("0");  //新注册商家为：未审核状态
+		seller.setCreateTime(new Date());
+		sellerMapper.insertSelective(seller);
 	}
 
-	
+
 	/**
 	 * 修改
 	 */
 	@Override
 	public void update(TbSeller seller){
 		sellerMapper.updateByPrimaryKeySelective(seller);
-	}	
-	
-	/**
-	 * 根据ID获取实体
+	}
+
+	/***
+	 * 根据Id获取实体
 	 * @param id
 	 * @return
 	 */
 	@Override
-	public TbSeller getById(Long id){
+	public TbSeller getById(String id) {
 		return sellerMapper.selectByPrimaryKey(id);
 	}
+
 
 	/**
 	 * 批量删除
@@ -183,15 +184,15 @@ public class SellerServiceImpl implements SellerService {
 	@Override
 	public void delete(Long[] ids) {
 		//数组转list
-        List longs = Arrays.asList(ids);
-        //构建查询条件
-        Example example = new Example(TbSeller.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andIn("id", longs);
+		List longs = Arrays.asList(ids);
+		//构建查询条件
+		Example example = new Example(TbSeller.class);
+		Example.Criteria criteria = example.createCriteria();
+		criteria.andIn("id", longs);
 
-        //跟据查询条件删除数据
-        sellerMapper.deleteByExample(example);
+		//跟据查询条件删除数据
+		sellerMapper.deleteByExample(example);
 	}
-	
-	
+
+
 }
