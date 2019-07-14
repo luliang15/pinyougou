@@ -39,7 +39,8 @@
         <headers>
             <frame-options policy="SAMEORIGIN"/>
         </headers>
-
+        <!--开启登出功能-->
+        <logout/>
     </http>
 
     <!-- 认证管理器 -->
