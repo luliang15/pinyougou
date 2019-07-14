@@ -21,6 +21,14 @@ public class TbSpecification implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
+     * 添加get方法用于支持前端v-select的数据展示
+     * @return
+     */
+    public String getText(){
+        return this.specName;
+    }
+
+    /**
      * 获取主键
      *
      * @return id - 主键

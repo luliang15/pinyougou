@@ -516,3 +516,5 @@
     }])
 });
 //# sourceMappingURL=vue-select.js.map
+//注册Vue组件
+Vue.component('v-select', VueSelect.VueSelect);

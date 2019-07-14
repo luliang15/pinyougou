@@ -38,7 +38,7 @@
 			<div class="pull-left">
 				<div class="form-group form-inline">
 					<div class="btn-group">
-						<button type="button" entity="{specification:{},specificationOptionList:[]}" class="btn btn-default" title="新建" data-toggle="modal"
+						<button type="button" class="btn btn-default" title="新建" data-toggle="modal"
 								data-target="#editModal"><i class="fa fa-file-o"></i> 新建
 						</button>
 						<button @click="dele()" type="button" class="btn btn-default" title="删除"><i class="fa fa-trash-o"></i> 删除
@@ -71,7 +71,6 @@
 				</thead>
 				<tbody>
 				<tr v-for="spec in list">
-					<!--删除的复选框的关联表-->
 					<td><input :value="spec.id" v-model="ids" type="checkbox"></td>
 					<td>{{spec.id}}</td>
 					<td>{{spec.specName}}</td>
@@ -107,7 +106,6 @@
 				<div class="modal-body">
 
 					<table class="table table-bordered table-striped" width="800px">
-						<!--绑定规格的名称-->
 						<tr>
 							<td>规格名称</td>
 							<td><input v-model="entity.specification.specName" class="form-control" placeholder="规格名称"></td>
@@ -146,7 +144,6 @@
 
 
 				</div>
-				<!--绑定按钮保存事件-->
 				<div class="modal-footer">
 					<button @click="add()" class="btn btn-success" data-dismiss="modal" aria-hidden="true">保存</button>
 					<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>

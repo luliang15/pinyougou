@@ -23,6 +23,14 @@ public class TbBrand implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
+     * 添加get方法用于支持前端v-select的数据展示
+     * @return
+     */
+    public String getText(){
+        return this.name;
+    }
+
+    /**
      * @return id
      */
     public Long getId() {
