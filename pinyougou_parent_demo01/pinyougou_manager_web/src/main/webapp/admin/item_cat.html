@@ -86,7 +86,7 @@
                     <td>{{cat.typeId}}</td>
                     <td class="text-center">
                         <button v-if="grade < 3" @click="grade+=1;findByParentId(cat)" type="button" class="btn bg-olive btn-xs">查询下级</button>
-                        <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal">
+                        <button type="button" @click="getById(cat.id)" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal">
                             修改
                         </button>
                     </td>
@@ -118,17 +118,17 @@
                         <tr>
                             <td>上级商品分类</td>
                             <td>
-                                珠宝 >> 银饰
+                                {{entity_2.name}} >>  {{entity_3.name}}
                             </td>
                         </tr>
                         <tr>
                             <td>商品分类名称</td>
-                            <td><input class="form-control" placeholder="商品分类名称"></td>
+                            <td><input v-model="entity.name" class="form-control" placeholder="商品分类名称"></td>
                         </tr>
                         <tr>
                             <td>类型模板</td>
                             <td>
-                                <input select2 config="options['type_template']" placeholder="商品类型模板"
+                                <input v-model="entity.typeId" select2 config="options['type_template']" placeholder="商品类型模板"
                                        class="form-control" type="text"/>
                             </td>
                         </tr>
@@ -136,7 +136,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-success" data-dismiss="modal" aria-hidden="true">保存</button>
+                    <button @click="add()" class="btn btn-success" data-dismiss="modal" aria-hidden="true">保存</button>
                     <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
                 </div>
             </div>
