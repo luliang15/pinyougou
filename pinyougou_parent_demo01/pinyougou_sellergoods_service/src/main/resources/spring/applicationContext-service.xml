@@ -10,7 +10,8 @@
     <!--dubbo生产者启动时使用的端口，默认是20880-->
     <dubbo:protocol name="dubbo" port="20881"></dubbo:protocol>
     <dubbo:application name="pinyougou-sellergoods-service"/>
-    <dubbo:registry address="zookeeper://192.168.218.128:2181"/>
+    <!--启动时不分先后顺序-->
+    <dubbo:registry address="zookeeper://192.168.218.128:2181" check="false"/>
     <dubbo:annotation package="com.pinyougou.sellergoods.service.impl" />
     <!--全局参数配置,超时时间：8秒-->
     <dubbo:provider timeout="8000" retries="0"/>
