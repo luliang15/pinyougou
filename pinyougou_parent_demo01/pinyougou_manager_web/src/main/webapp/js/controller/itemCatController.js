@@ -16,7 +16,15 @@ window.onload=function () {
 			//将要删除的id列表
 			ids:[],
 			//搜索包装对象
-			searchEntity:{}
+			searchEntity:{},
+			//记录面包屑当前的级别
+			grade:1,
+			//一级分类
+			entity_1:{name:'顶级分类列表',id:0},
+			//二级分类
+			entity_2:{},
+			//三级分类
+			entity_3:{}
 		},
 		methods:{
 			//查询所有
@@ -75,12 +83,36 @@ window.onload=function () {
 						alert(response.data.message);
 					}
 				})
-			}
+			},
+			//根据父节点查询的数据列表
+            findByParentId:function(p_entity) {
+				//当前级别是2
+				if(this.grade==2){
+					//记录的是当前是二
+					this.entity_2=p_entity;
+					//清空三级的数据
+					this.entity_3={};
+				}else if(this.grade==3){
+					//记录当前是三
+					this.entity_3=p_entity;
+				}else {
+					//当时一级菜单的时候
+                    //清空二级的数据
+                    this.entity_2={};
+                    //清空三级的数据
+                    this.entity_3={};
+				}
+                axios.get("../itemCat/findByParentId.do?parentId=" + p_entity.id).then(function (response) {
+                    app.list = response.data;
+                });
+            }
 		},
 		//Vue对象初始化后，调用此逻辑
 		created:function () {
 			//调用用分页查询，初始化时从第1页开始查询
-			this.findPage(1);
+			//this.findPage(1);
+			//调用分页查询,初始化时从第一页开始查询
+			this.findByParentId(this.entity_1);
 		}
 	});
 }

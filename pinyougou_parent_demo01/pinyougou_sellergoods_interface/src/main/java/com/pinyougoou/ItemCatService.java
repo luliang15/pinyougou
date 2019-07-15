@@ -52,5 +52,12 @@ public interface ItemCatService {
 	 */
 	public void delete(Long[] ids);
 
+    /***
+     * 根据父ID查询商品分类列表
+     * @param parentId
+     * @return
+     */
+	public  List<TbItemCat> findByParentId(Long parentId);
+
 	
 }
