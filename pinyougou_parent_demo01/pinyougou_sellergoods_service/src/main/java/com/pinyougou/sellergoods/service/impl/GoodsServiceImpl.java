@@ -102,7 +102,8 @@ public class GoodsServiceImpl implements GoodsService {
 	@Override
 	public void add(Goods goods) {
 		//保存商品基本信息
-		goods.getGoods().setAuditStatus("0");  //新增商品为未审核状态
+		//0为新增商品为未审核状态
+		goods.getGoods().setAuditStatus("0");
 		goodsMapper.insertSelective(goods.getGoods());
 		//保存商品扩展信息
 		goods.getGoodsDesc().setGoodsId(goods.getGoods().getId());

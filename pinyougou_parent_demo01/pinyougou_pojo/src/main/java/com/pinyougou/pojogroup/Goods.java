@@ -39,4 +39,13 @@ public class Goods implements Serializable {
     public void setItemList(List<TbItem> itemList) {
         this.itemList = itemList;
     }
+
+    @Override
+    public String toString() {
+        return "Goods{" +
+                "goods=" + goods +
+                ", goodsDesc=" + goodsDesc +
+                ", itemList=" + itemList +
+                '}';
+    }
 }
