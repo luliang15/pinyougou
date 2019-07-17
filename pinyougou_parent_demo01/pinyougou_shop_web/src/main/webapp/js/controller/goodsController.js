@@ -3,7 +3,7 @@
 //创建Vue对象
 var app = new Vue({
     //接管id为app的区域
-    el: "#app",
+    el:"#app",
     data: {
         //声明数据列表变量，供v-for使用
         list: [],
@@ -18,7 +18,13 @@ var app = new Vue({
         //搜索包装对象
         searchEntity: {},
         //图片上传成功后保存的对象
-        image_entity: {url: ''}
+        image_entity: {url: ''},
+        //一级分类
+        itemCatList1:[],
+        //二级分类
+        itemCatList2:[],
+        //三级分类
+        itemCatList3:[]
     },
     methods: {
         //查询所有
@@ -111,13 +117,45 @@ var app = new Vue({
         //删除图片
         remove_image_entity:function(index){
             this.entity.goodsDesc.itemImages.splice(index,1);
+        },
+        //公用的方法
+        //查询商品分类(父节点id,当前查询的分类级别)
+        /**
+         * 公用的方法
+         * 查询的商品的分类的父节点的id,当前的分类的级别
+         * 根据父id查询分类的列表
+         * @param parentId 父节点
+         * @param grade 当前的查询的分类的级别:1/2/3
+         */
+        findItemCatList:function (parentId,grade) {
+            axios.get("/itemCat/findByParentId.do?parentId="+parentId).then(function (response) {
+                //app["itemCat"+grade]相当于app.itemCat1至3
+                app["itemCatList"+grade] = response.data;
+            })
         }
-
     },
+    watch:{
+        //当一级分类变量变化后，触发以下逻辑
+        //参数(改后新的值，改前旧的值)
+        "entity.goods.category1Id":function (newValue,oldValue) {
+            //查询二级分类
+            this.findItemCatList(newValue, 2);
+        },
+        //当二级分类变量变化后，触发以下逻辑
+        //参数(改后新的值，改前旧的值)
+        "entity.goods.category2Id":function (newValue,oldValue) {
+            //查询三级分类
+            this.findItemCatList(newValue, 3);
+        }
+    },
+    //监听变量的变化触发某些逻辑
+
     //Vue对象初始化后，调用此逻辑
     created: function () {
         //调用用分页查询，初始化时从第1页开始查询
-        this.findPage(1);
+        //this.findPage(1);
+        //查询商品的一级分类
+        this.findItemCatList(0,1);
     }
 });
-//}
+

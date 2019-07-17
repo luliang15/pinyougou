@@ -25,8 +25,7 @@
     <script src="../plugins/Vue/vuejs-2.5.16.js"></script>
     <script src="../plugins/Vue/axios-0.18.0.js"></script>
 
-    <!--引入Vue前端逻辑JS-->
-    <script src="../js/controller/goodsController.js"></script>
+
 </head>
 
 <body class="hold-transition skin-red sidebar-mini">
@@ -68,14 +67,22 @@
                                 <table>
                                     <tr>
                                         <td>
-                                            <select class="form-control">
+                                            <!--一级-->
+                                            <select class="form-control" v-model="entity.goods.category1Id">
+                                                <option v-for="cat in itemCatList1" :value="cat.id">{{cat.name}}</option>
                                             </select>
                                         </td>
                                         <td>
-                                            <select class="form-control select-sm"></select>
+                                            <!--二级-->
+                                            <select class="form-control select-sm" v-model="entity.goods.category2Id">
+                                                <option v-for="cat in itemCatList2" :value="cat.id">{{cat.name}}</option>
+                                            </select>
                                         </td>
                                         <td>
-                                            <select class="form-control select-sm"></select>
+                                            <!--三级-->
+                                            <select class="form-control select-sm" v-model="entity.goods.category3Id">
+                                                <option v-for="cat in itemCatList3" :value="cat.id">{{cat.name}}</option>
+                                            </select>
                                         </td>
                                         <td>
                                             模板ID:19
@@ -411,6 +418,8 @@
     });
 
 </script>
+<!--引入Vue前端逻辑JS-->
+<script src="../js/controller/goodsController.js"></script>
 </body>
 
 </html>
