@@ -8,11 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.abel533.entity.Example;
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.pinyougou.mapper.TbAddressMapper;
 import com.pinyougou.pojo.TbAddress;
-
-
 /**
  * 业务逻辑实现
  * @author Steven
@@ -23,7 +22,7 @@ public class AddressServiceImpl implements AddressService {
 
 	@Autowired
 	private TbAddressMapper addressMapper;
-	
+
 	/**
 	 * 查询全部
 	 */
@@ -38,15 +37,15 @@ public class AddressServiceImpl implements AddressService {
 	@Override
 	public PageResult findPage(int pageNum, int pageSize, TbAddress address) {
 		PageResult<TbAddress> result = new PageResult<TbAddress>();
-        //设置分页条件
-        PageHelper.startPage(pageNum, pageSize);
+		//设置分页条件
+		PageHelper.startPage(pageNum, pageSize);
 
-        //构建查询条件
-        Example example = new Example(TbAddress.class);
-        Example.Criteria criteria = example.createCriteria();
-		
-		if(address!=null){			
-						//如果字段不为空
+		//构建查询条件
+		Example example = new Example(TbAddress.class);
+		Example.Criteria criteria = example.createCriteria();
+
+		if(address!=null){
+			//如果字段不为空
 			if (address.getUserId()!=null && address.getUserId().length()>0) {
 				criteria.andLike("userId", "%" + address.getUserId() + "%");
 			}
@@ -86,18 +85,18 @@ public class AddressServiceImpl implements AddressService {
 			if (address.getAlias()!=null && address.getAlias().length()>0) {
 				criteria.andLike("alias", "%" + address.getAlias() + "%");
 			}
-	
+
 		}
 
-        //查询数据
-        List<TbAddress> list = addressMapper.selectByExample(example);
-        //返回数据列表
-        result.setRows(list);
+		//查询数据
+		List<TbAddress> list = addressMapper.selectByExample(example);
+		//返回数据列表
+		result.setRows(list);
 
-        //获取总页数
-        PageInfo<TbAddress> info = new PageInfo<TbAddress>(list);
-        result.setPages(info.getPages());
-		
+		//获取总页数
+		PageInfo<TbAddress> info = new PageInfo<TbAddress>(list);
+		result.setPages(info.getPages());
+
 		return result;
 	}
 
@@ -106,18 +105,18 @@ public class AddressServiceImpl implements AddressService {
 	 */
 	@Override
 	public void add(TbAddress address) {
-		addressMapper.insertSelective(address);		
+		addressMapper.insertSelective(address);
 	}
 
-	
+
 	/**
 	 * 修改
 	 */
 	@Override
 	public void update(TbAddress address){
 		addressMapper.updateByPrimaryKeySelective(address);
-	}	
-	
+	}
+
 	/**
 	 * 根据ID获取实体
 	 * @param id
@@ -134,15 +133,15 @@ public class AddressServiceImpl implements AddressService {
 	@Override
 	public void delete(Long[] ids) {
 		//数组转list
-        List longs = Arrays.asList(ids);
-        //构建查询条件
-        Example example = new Example(TbAddress.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andIn("id", longs);
+		List longs = Arrays.asList(ids);
+		//构建查询条件
+		Example example = new Example(TbAddress.class);
+		Example.Criteria criteria = example.createCriteria();
+		criteria.andIn("id", longs);
 
-        //跟据查询条件删除数据
-        addressMapper.deleteByExample(example);
+		//跟据查询条件删除数据
+		addressMapper.deleteByExample(example);
 	}
-	
-	
+
+
 }

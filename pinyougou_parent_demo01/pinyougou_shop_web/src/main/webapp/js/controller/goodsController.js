@@ -258,6 +258,7 @@ var app = new Vue({
                 app.entity.goodsDesc.customAttributeItems = JSON.parse(response.data.customAttributeItems);
 
                 //根据模板id查询规格与选项列表
+                //c哈希规格的列表
                 axios.get("/typeTemplate/findSpecList.do?id=" + newValue).then(function (response) {
                     app.specIds = response.data;
                 })

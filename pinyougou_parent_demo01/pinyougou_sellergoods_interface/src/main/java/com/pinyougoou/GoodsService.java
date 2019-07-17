@@ -1,10 +1,11 @@
 package com.pinyougoou;
+
 import java.util.List;
 
 import com.pinyougou.entity.PageResult;
 import com.pinyougou.pojo.TbGoods;
-import com.pinyougou.pojogroup.Goods;
 
+import com.pinyougou.pojogroup.Goods;
 
 /**
  * 业务逻辑接口
@@ -18,26 +19,26 @@ public interface GoodsService {
 	 * @return
 	 */
 	public List<TbGoods> findAll();
-	
-	
+
+
 	/**
-     * 分页查询列表
-     * @return
-     */
-    public PageResult<TbGoods> findPage(int pageNum, int pageSize, TbGoods goods);
-	
-	
+	 * 分页查询列表
+	 * @return
+	 */
+	public PageResult<TbGoods> findPage(int pageNum, int pageSize, TbGoods goods);
+
+
 	/**
 	 * 增加
-	*/
+	 */
 	public void add(Goods goods);
-	
-	
+
+
 	/**
 	 * 修改
 	 */
 	public void update(TbGoods goods);
-	
+
 
 	/**
 	 * 根据ID获取实体
@@ -45,13 +46,13 @@ public interface GoodsService {
 	 * @return
 	 */
 	public TbGoods getById(Long id);
-	
-	
+
+
 	/**
 	 * 批量删除
 	 * @param ids
 	 */
-	public void delete(Long[] ids);
+	public void delete(Long [] ids);
 
-	
+
 }

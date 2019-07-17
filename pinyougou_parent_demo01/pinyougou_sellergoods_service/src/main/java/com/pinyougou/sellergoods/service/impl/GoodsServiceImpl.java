@@ -1,18 +1,20 @@
 package com.pinyougou.sellergoods.service.impl;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import com.alibaba.fastjson.JSON;
 import com.pinyougoou.GoodsService;
 import com.pinyougou.entity.PageResult;
-import com.pinyougou.mapper.TbGoodsDescMapper;
+import com.pinyougou.mapper.*;
+import com.pinyougou.pojo.*;
 import com.pinyougou.pojogroup.Goods;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.abel533.entity.Example;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.PageHelper;
-import com.pinyougou.mapper.TbGoodsMapper;
-import com.pinyougou.pojo.TbGoods;
 /**
  * 业务逻辑实现
  * @author Steven
@@ -95,20 +97,88 @@ public class GoodsServiceImpl implements GoodsService {
 		return result;
 	}
 
+	@Autowired
+	private TbItemCatMapper itemCatMapper;
+	@Autowired
+	private TbSellerMapper sellerMapper;
+	@Autowired
+	private TbBrandMapper brandMapper;
+	@Autowired
+	private TbItemMapper itemMapper;
+
 	/**
 	 * 增加
 	 */
 	@Override
 	public void add(Goods goods) {
 		//保存商品基本信息
-		//0为新增商品为未审核状态
-		goods.getGoods().setAuditStatus("0");
+		goods.getGoods().setAuditStatus("0");  //新增商品为未审核状态
 		goodsMapper.insertSelective(goods.getGoods());
 		//保存商品扩展信息
 		goods.getGoodsDesc().setGoodsId(goods.getGoods().getId());
 		goodsDescMapper.insertSelective(goods.getGoodsDesc());
 
 		//保存商品SKU列表.......
+		//如果不启用规格
+		if("0".equals(goods.getGoods().getIsEnableSpec())) {
+			//创建默认的sku信息
+			TbItem item=new TbItem();
+			item.setTitle(goods.getGoods().getGoodsName());//商品KPU+规格描述串作为SKU名称
+			item.setPrice( goods.getGoods().getPrice() );//价格
+			item.setStatus("1");//状态
+			item.setIsDefault("1");//是否默认
+			item.setNum(99999);//库存数量
+			item.setSpec("{}");
+			setItemValus(goods,item);
+			itemMapper.insertSelective(item);
+		}else{
+			for (TbItem item : goods.getItemList()) {
+				String title = goods.getGoods().getGoodsName();
+				//{"机身内存":"16G","网络":"移动4G"}
+				Map<String, String> specMap = JSON.parseObject(item.getSpec(), Map.class);
+				for (String key : specMap.keySet()) {
+					title += " " + specMap.get(key);
+				}
+				item.setTitle(title);  //标题
+				setItemValus(goods, item);
+				//保存SKU
+				itemMapper.insertSelective(item);
+			}
+		}
+	}
+
+	/**
+	 * 构建sku基本信息
+	 * @param goods
+	 * @param item
+	 */
+	private void setItemValus(Goods goods, TbItem item) {
+		item.setSellPoint(goods.getGoods().getCaption());  //卖点
+		//把图片Json串转成List<map>
+		List<Map> imgList = JSON.parseArray(goods.getGoodsDesc().getItemImages(), Map.class);
+		if (imgList != null && imgList.size() > 0) {
+			item.setImage(imgList.get(0).get("url").toString());
+		}
+		item.setCategoryid(goods.getGoods().getCategory3Id());
+		//商品分类名称
+		TbItemCat itemCat = itemCatMapper.selectByPrimaryKey(item.getCategoryid());
+		item.setCategory(itemCat.getName());
+
+		//创建日期
+		item.setCreateTime(new Date());
+		//更新日期
+		item.setUpdateTime(item.getCreateTime());
+
+		//所属SPU-id
+		item.setGoodsId(goods.getGoods().getId());
+		//所属商家
+		item.setSellerId(goods.getGoods().getSellerId());
+		TbSeller seller = sellerMapper.selectByPrimaryKey(item.getSellerId());
+		item.setSeller(seller.getNickName());
+
+		//品牌信息
+		TbBrand brand = brandMapper.selectByPrimaryKey(goods.getGoods().getBrandId());
+		item.setBrand(brand.getName());
 	}
 
 

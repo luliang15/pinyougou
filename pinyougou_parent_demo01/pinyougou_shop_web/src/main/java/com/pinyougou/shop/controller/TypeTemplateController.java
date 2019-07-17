@@ -102,7 +102,12 @@ public class TypeTemplateController {
         }
     }
 
-    @RequestMapping("findSpecList")
+    /**
+     * 根据模板的id查询的规格的列表
+     * @param id
+     * @return
+     */
+    @RequestMapping("/findSpecList")
     public List<Map> findSpecList(Long id){
         return typeTemplateService.findSpecList(id);
     }
