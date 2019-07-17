@@ -56,7 +56,7 @@
                         </button>
                         <button type="button" @click="dele()" class="btn btn-default" title="删除"><i class="fa fa-trash-o"></i> 删除
                         </button>
-                        <button type="button" class="btn btn-default" title="刷新"><i class="fa fa-check"></i> 刷新</button>
+                        <button type="button" @click="findAll()" class="btn btn-default" title="刷新"><i class="fa fa-check"></i> 刷新</button>
 
                     </div>
                 </div>
@@ -80,7 +80,7 @@
                 <tbody>
                 <!--循环列表-->
                 <tr v-for="cat in list">
-                    <td><input type="checkbox"></td>
+                    <td><input :value="cat.id" v-model="ids"  type="checkbox"></td>
                     <td>{{cat.id}}</td>
                     <td>{{cat.name}}</td>
                     <td>{{cat.typeId}}</td>

@@ -72,6 +72,7 @@ window.onload = function () {
             },
             //跟据id查询
             getById: function (id) {
+                this.entity.parentId=this.parentId;
                 axios.get("../itemCat/getById.do?id=" + id).then(function (response) {
                     app.entity = response.data;
                 })
@@ -120,6 +121,7 @@ window.onload = function () {
             //this.findPage(1);
             //调用分页查询,初始化时从第一页开始查询
             this.findByParentId(this.entity_1);
+            this.data(this.entity_1);
         }
     });
 }
