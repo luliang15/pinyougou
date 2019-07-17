@@ -1,5 +1,6 @@
 package com.pinyougoou;
 import java.util.List;
+import java.util.Map;
 
 import com.pinyougou.entity.PageResult;
 import com.pinyougou.pojo.TbTypeTemplate;
@@ -52,5 +53,10 @@ public interface TypeTemplateService {
 	 */
 	public void delete(Long[] ids);
 
-	
+	/***
+	 * 根据模板id查询规格列表
+	 * @param id
+	 * @return
+	 */
+	List<Map> findSpecList(Long id);
 }

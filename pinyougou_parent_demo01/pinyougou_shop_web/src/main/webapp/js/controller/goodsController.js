@@ -3,7 +3,7 @@
 //创建Vue对象
 var app = new Vue({
     //接管id为app的区域
-    el:"#app",
+    el: "#app",
     data: {
         //声明数据列表变量，供v-for使用
         list: [],
@@ -12,7 +12,14 @@ var app = new Vue({
         //当前页
         pageNo: 1,
         //声明对象
-        entity: {goods: {}, goodsDesc: {itemImages:[]}},
+        entity: {
+            goods: {typeTemplateId: 0,isEnableSpec:0},
+            // goodsDesc: {itemImages:[图片列表],customAttributeItems:[扩展属性列表],
+            //              ,specificationItems:[勾选的规格列表]}
+            goodsDesc: {itemImages: [], customAttributeItems: [], specificationItems: []},
+            //sku列表
+            itemList:[]
+        },
         //将要删除的id列表
         ids: [],
         //搜索包装对象
@@ -20,11 +27,15 @@ var app = new Vue({
         //图片上传成功后保存的对象
         image_entity: {url: ''},
         //一级分类
-        itemCatList1:[],
+        itemCatList1: [],
         //二级分类
-        itemCatList2:[],
+        itemCatList2: [],
         //三级分类
-        itemCatList3:[]
+        itemCatList3: [],
+        //品牌列表
+        brandIds: [],
+        //规格列表
+        specIds: []
     },
     methods: {
         //查询所有
@@ -61,7 +72,7 @@ var app = new Vue({
                 alert(response.data.message);
                 if (response.data.success) {
                     //刷新数据，刷新当前页
-                    app.entity = {goods: {}, goodsDesc: {itemImages:[]}};
+                    app.entity = {goods: {}, goodsDesc: {itemImages: []}};
 
                     //清除富文本内容
                     editor.html("");
@@ -111,51 +122,154 @@ var app = new Vue({
             })
         },
         //保存图片列表
-        add_image_entity:function(){
+        add_image_entity: function () {
             this.entity.goodsDesc.itemImages.push(this.image_entity);
         },
         //删除图片
-        remove_image_entity:function(index){
-            this.entity.goodsDesc.itemImages.splice(index,1);
+        remove_image_entity: function (index) {
+            this.entity.goodsDesc.itemImages.splice(index, 1);
         },
-        //公用的方法
-        //查询商品分类(父节点id,当前查询的分类级别)
         /**
-         * 公用的方法
-         * 查询的商品的分类的父节点的id,当前的分类的级别
-         * 根据父id查询分类的列表
+         * 根据父id查询分类列表
          * @param parentId 父节点
-         * @param grade 当前的查询的分类的级别:1/2/3
+         * @param grade 当前查询的分类级别:1|2|3
          */
-        findItemCatList:function (parentId,grade) {
-            axios.get("/itemCat/findByParentId.do?parentId="+parentId).then(function (response) {
-                //app["itemCat"+grade]相当于app.itemCat1至3
-                app["itemCatList"+grade] = response.data;
+        findItemCatList: function (parentId, grade) {
+            axios.get("/itemCat/findByParentId.do?parentId=" + parentId).then(function (response) {
+                app["itemCatList" + grade] = response.data;
             })
-        }
-    },
-    watch:{
-        //当一级分类变量变化后，触发以下逻辑
-        //参数(改后新的值，改前旧的值)
-        "entity.goods.category1Id":function (newValue,oldValue) {
-            //查询二级分类
-            this.findItemCatList(newValue, 2);
         },
-        //当二级分类变量变化后，触发以下逻辑
-        //参数(改后新的值，改前旧的值)
-        "entity.goods.category2Id":function (newValue,oldValue) {
-            //查询三级分类
-            this.findItemCatList(newValue, 3);
+        /**
+         * 查找一个数组中某个属性是否等于某个值
+         * @param list 查找的数组
+         * @param key 对比的属性名
+         * @param value 对比的属性值
+         * @return 查找结果：当前找到的对象|null
+         */
+        searchObjectByKey: function (list, key, value) {
+            for (let i = 0; i < list.length; i++) {
+                //匹配到相应内容
+                if (list[i][key] == value) {
+                    return list[i];
+                }
+            }
+            return null;
+        },
+        /**
+         * 页面上规格checkbox点击事件
+         * 记录用户勾中的规格列表
+         * @param event 当前的checkbox
+         * @param specName 规格名称信息
+         * @param optionName 选项名称信息
+         */
+        updateSpecAttribute: function (event, specName, optionName) {
+            // 1: 检查我们的规格名称有没有被勾选过
+            let obj = this.searchObjectByKey(this.entity.goodsDesc.specificationItems,"attributeName",specName);
+            // 2:如果当前勾选的规格名称不存在
+            if(obj == null){
+                // 2.1: 规格列表追加一个元素
+                this.entity.goodsDesc.specificationItems.push({
+                    "attributeName":specName,
+                    "attributeValue":[
+                        optionName
+                    ]
+                });
+            }else{ // 3:如果当前勾选的规格名称存在
+                // 3.1:如果checkbox是是选中状态
+                if(event.target.checked){
+                    // 3.1.1: 追加规格选项元素
+                    obj.attributeValue.push(optionName);
+                }else{ // 3.2: 如果checkbox是取消勾选
+                    // 3.2.1: 删除规格选项元素
+                    let optionIndex = obj.attributeValue.indexOf(optionName);
+                    obj.attributeValue.splice(optionIndex, 1);
+                    // 3.2.2: 如果取消勾选后，选项列表已经没有了
+                    if(obj.attributeValue.length < 1){
+                        // 3.2.3:移除整个规格名称列表
+                        let specIndex = this.entity.goodsDesc.specificationItems.indexOf(obj);
+                        this.entity.goodsDesc.specificationItems.splice(specIndex, 1);
+                    }
+                }
+            }
+            //刷新表格
+            this.createItemList();
+        },
+        // 1.创建createItemList方法，同时创建一条有基本数据，不带规格的初始数据
+        createItemList:function () {
+            // 参考: entity.itemList:[{spec:{},price:0,num:99999,status:'0',isDefault:'0' }]
+            this.entity.itemList = [{spec: {}, price: 0, num: 99999, status: '0', isDefault: '0'}];
+
+            // 2.查找遍历所有已选择的规格列表，后续会重复使用它，所以我们可以抽取出个变量items
+            let items = this.entity.goodsDesc.specificationItems;
+            for(let i = 0; i < items.length; i++){
+                // 9.回到createItemList方法中，在循环中调用addColumn方法，并让itemList重新指向返回结果;
+                this.entity.itemList = this.addColumn(this.entity.itemList, items[i].attributeName, items[i].attributeValue);
+            }
+        },
+        // 3.抽取addColumn(当前的表格，列名称，列的值列表)方法，用于每次循环时追加列
+        addColumn:function (list,specName,optionName) {
+            // 4.编写addColumn逻辑，当前方法要返回添加所有列后的表格，定义新表格变量newList
+            let newList = [];
+            // 5.在addColumn添加两重嵌套循环，一重遍历之前表格的列表，二重遍历新列值列表
+            for(let i = 0; i < list.length; i++){
+                for(let j = 0; j < optionName.length; j++){
+                    // 6.在第二重循环中，使用深克隆技巧，把之前表格的一行记录copy所有属性，
+                    // 用到var newRow = JSON.parse(JSON.stringify(之前表格的一行记录));
+                    let newRow = JSON.parse(JSON.stringify(list[i]));
+                    // 7.接着第6步，向newRow里追加一列
+                    newRow.spec[specName] = optionName[j];
+                    // 8.把新生成的行记录，push到newList中
+                    newList.push(newRow);
+                }
+            }
+            return newList;
         }
     },
-    //监听变量的变化触发某些逻辑
+    watch: {
+        //监听"entity.goods.category1Id"变量，值发生变化后
+        //会调用function(修改后的值，修改前的值)
+        "entity.goods.category1Id": function (newValue, oldValue) {
+            //加载二级分类
+            this.findItemCatList(newValue, 2);
+            //清空三级分类
+            this.itemCatList3 = [];
+            //清空模板id
+            this.entity.goods.typeTemplateId = 0;
+        },
+        //监听"entity.goods.category2Id"变量，值发生变化后
+        //会调用function(修改后的值，修改前的值)
+        "entity.goods.category2Id": function (newValue, oldValue) {
+            //加载二级分类
+            this.findItemCatList(newValue, 3);
+        },
+        "entity.goods.category3Id": function (newValue, oldValue) {
+            //读取模板id
+            axios.get("/itemCat/getById.do?id=" + newValue).then(function (response) {
+                app.entity.goods.typeTemplateId = response.data.typeId;
+            })
+        },
+        "entity.goods.typeTemplateId": function (newValue, oldValue) {
+            //读取模板id
+            axios.get("/typeTemplate/getById.do?id=" + newValue).then(function (response) {
+                //把品牌json串转成数组对象
+                app.brandIds = JSON.parse(response.data.brandIds);
+                //把扩展属性json串转成数组对象
+                //扩展属性列表
+                app.entity.goodsDesc.customAttributeItems = JSON.parse(response.data.customAttributeItems);
 
+                //根据模板id查询规格与选项列表
+                axios.get("/typeTemplate/findSpecList.do?id=" + newValue).then(function (response) {
+                    app.specIds = response.data;
+                })
+            });
+        }
+    },
     //Vue对象初始化后，调用此逻辑
     created: function () {
         //调用用分页查询，初始化时从第1页开始查询
         //this.findPage(1);
-        //查询商品的一级分类
-        this.findItemCatList(0,1);
+        //加载顶级分类节点
+        this.findItemCatList(0, 1);
     }
 });
-
+//}
