@@ -72,7 +72,7 @@ var app = new Vue({
                 alert(response.data.message);
                 if (response.data.success) {
                     //刷新数据，刷新当前页
-                    app.entity = {goods: {}, goodsDesc: {itemImages: []}};
+                    app.entity = {goods: {}, goodsDesc: {itemImages:[]}};
 
                     //清除富文本内容
                     editor.html("");
@@ -229,40 +229,49 @@ var app = new Vue({
         //监听"entity.goods.category1Id"变量，值发生变化后
         //会调用function(修改后的值，修改前的值)
         "entity.goods.category1Id": function (newValue, oldValue) {
-            //加载二级分类
-            this.findItemCatList(newValue, 2);
-            //清空三级分类
-            this.itemCatList3 = [];
-            //清空模板id
-            this.entity.goods.typeTemplateId = 0;
+            if(newValue>0){
+                //加载二级分类
+                this.findItemCatList(newValue, 2);
+                //清空三级分类
+                this.itemCatList3 = [];
+                //清空模板id
+                this.entity.goods.typeTemplateId = 0;
+            }
+
         },
         //监听"entity.goods.category2Id"变量，值发生变化后
         //会调用function(修改后的值，修改前的值)
         "entity.goods.category2Id": function (newValue, oldValue) {
-            //加载二级分类
-            this.findItemCatList(newValue, 3);
+            if(newValue>0){
+                //加载二级分类
+                this.findItemCatList(newValue, 3);
+            }
         },
         "entity.goods.category3Id": function (newValue, oldValue) {
-            //读取模板id
-            axios.get("/itemCat/getById.do?id=" + newValue).then(function (response) {
-                app.entity.goods.typeTemplateId = response.data.typeId;
-            })
+           if(newValue>0){
+               //读取模板id
+               axios.get("/itemCat/getById.do?id=" + newValue).then(function (response) {
+                   app.entity.goods.typeTemplateId = response.data.typeId;
+               })
+           }
         },
         "entity.goods.typeTemplateId": function (newValue, oldValue) {
-            //读取模板id
-            axios.get("/typeTemplate/getById.do?id=" + newValue).then(function (response) {
-                //把品牌json串转成数组对象
-                app.brandIds = JSON.parse(response.data.brandIds);
-                //把扩展属性json串转成数组对象
-                //扩展属性列表
-                app.entity.goodsDesc.customAttributeItems = JSON.parse(response.data.customAttributeItems);
+            if(newValue>0){
+                //读取模板id
+                axios.get("/typeTemplate/getById.do?id=" + newValue).then(function (response) {
+                    //把品牌json串转成数组对象
+                    app.brandIds = JSON.parse(response.data.brandIds);
+                    //把扩展属性json串转成数组对象
+                    //扩展属性列表
+                    app.entity.goodsDesc.customAttributeItems = JSON.parse(response.data.customAttributeItems);
 
-                //根据模板id查询规格与选项列表
-                //c哈希规格的列表
-                axios.get("/typeTemplate/findSpecList.do?id=" + newValue).then(function (response) {
-                    app.specIds = response.data;
-                })
-            });
+                    //根据模板id查询规格与选项列表
+                    //c哈希规格的列表
+                    axios.get("/typeTemplate/findSpecList.do?id=" + newValue).then(function (response) {
+                        app.specIds = response.data;
+                    })
+                });
+            }
         }
     },
     //Vue对象初始化后，调用此逻辑
@@ -270,7 +279,7 @@ var app = new Vue({
         //调用用分页查询，初始化时从第1页开始查询
         //this.findPage(1);
         //加载顶级分类节点
-        this.findItemCatList(0, 1);
+        this.findItemCatList(0,1);
     }
 });
 //}
