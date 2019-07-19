@@ -81,10 +81,12 @@ public class GoodsServiceImpl implements GoodsService {
             if (goods.getIsEnableSpec() != null && goods.getIsEnableSpec().length() > 0) {
                 criteria.andLike("isEnableSpec", "%" + goods.getIsEnableSpec() + "%");
             }
-            //如果字段不为空
+            /*//如果字段不为空
             if (goods.getIsDelete() != null && goods.getIsDelete().length() > 0) {
                 criteria.andLike("isDelete", "%" + goods.getIsDelete() + "%");
-            }
+            }*/
+            //查询没删除的数据
+            criteria.andIsNull("isDelete");
 
         }
 
@@ -248,7 +250,13 @@ public class GoodsServiceImpl implements GoodsService {
         criteria.andIn("id", longs);
 
         //跟据查询条件删除数据
-        goodsMapper.deleteByExample(example);
+        //goodsMapper.deleteByExample(example);
+
+        //逻辑删除
+        TbGoods record = new TbGoods();
+        record.setIsDelete("1");   //已删除
+        goodsMapper.updateByExampleSelective(record, example);
+
     }
 
 
