@@ -19,6 +19,18 @@
             <artifactId>persistence-api</artifactId>
             <version>1.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+            <version>7.2.1</version>
+        </dependency>
+        <!--spring-es-->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-elasticsearch</artifactId>
+            <!--由于spring-es这个包依赖比较多,索引我们只能测试的时候使用-->
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
 </project>

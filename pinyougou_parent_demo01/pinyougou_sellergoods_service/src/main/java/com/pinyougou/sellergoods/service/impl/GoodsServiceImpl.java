@@ -16,6 +16,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.github.abel533.entity.Example;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.PageHelper;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 业务逻辑实现

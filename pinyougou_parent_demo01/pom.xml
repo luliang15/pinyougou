@@ -16,6 +16,13 @@
         <module>pinyougou_sellergoods_service</module>
         <module>pinyougou_manager_web</module>
         <module>pinyougou_shop_web</module>
+        <module>pinyougou_content_interface</module>
+        <module>pinyougou_content_service</module>
+        <module>pinyougou_portal_web</module>
+        <module>pinyougou_es_util</module>
+        <module>pinyougou_search_interface</module>
+        <module>pinyougou_search_service</module>
+        <module>pinyougou_search_web</module>
     </modules>
 
     <!-- 集中定义依赖版本号 -->
@@ -291,6 +298,16 @@
     </dependencyManagement>
 
     <build>
+        <!--<resources>
+            &lt;!&ndash;IDEA不要忽略java目录下的xml文件&ndash;&gt;
+            <resource>
+                <directory>src/main</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>-->
+
         <plugins>
             <!-- idea中Maven项目默认的LanguageLevel是1.5，需要在此强制修改java编译插件 -->
             <plugin>
@@ -305,5 +322,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
