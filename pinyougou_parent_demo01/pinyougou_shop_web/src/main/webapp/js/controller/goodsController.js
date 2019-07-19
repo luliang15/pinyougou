@@ -35,7 +35,11 @@ var app = new Vue({
         //品牌列表
         brandIds: [],
         //规格列表
-        specIds: []
+        specIds: [],
+        //商品状态
+        status:['未审核','已审核','审核未通过','关闭'],
+        //商品分类的对象
+        itemCatMap:{}
     },
     methods: {
         //查询所有
@@ -45,6 +49,19 @@ var app = new Vue({
                 app.list = response.data;
             }).catch(function (err) {
                 console.log(err);
+            });
+        },
+        //加载所有的分类
+        findAllItemCat:function () {
+            axios.get("/itemCat/findAll.do").then(function (response) {
+                //组装商品分类数组[id:商品分类名称]
+                for(let i = 0; i < response.data.length; i++){
+                    //构建所有商品分类的Map对象{id:name}，这种写法显示不了
+                    //app.itemCatMap[response.data[i].id] = response.data[i].name;
+
+                    //$set(操作的变量名,修改的属性,修改的值)
+                    app.$set(app.itemCatMap,response.data[i].id,response.data[i].name);
+                }
             });
         },
         //分页查询
@@ -277,9 +294,11 @@ var app = new Vue({
     //Vue对象初始化后，调用此逻辑
     created: function () {
         //调用用分页查询，初始化时从第1页开始查询
-        //this.findPage(1);
+        this.findPage(1);
         //加载顶级分类节点
         this.findItemCatList(0,1);
+        //查询所有的分类
+        this.findAllItemCat();
     }
 });
 //}

@@ -40,15 +40,13 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/findPage")
-	public PageResult findPage(int pageNo, int pageSize, @RequestBody TbGoods goods){
+	public PageResult  findPage(int pageNo,int pageSize,@RequestBody TbGoods goods){
+		//获取商家ID
+		String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
+		//添加查询条件
+		goods.setSellerId(sellerId);
 		return goodsService.findPage(pageNo, pageSize,goods);
 	}
-	
-	/**
-	 * 增加
-	 * @param goods
-	 * @return
-	 */
 	/**
 	 * 增加
 	 * @param goods

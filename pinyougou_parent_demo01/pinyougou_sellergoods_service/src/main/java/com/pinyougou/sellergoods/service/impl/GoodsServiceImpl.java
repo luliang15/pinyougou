@@ -52,7 +52,8 @@ public class GoodsServiceImpl implements GoodsService {
 		if(goods!=null){
 			//如果字段不为空
 			if (goods.getSellerId()!=null && goods.getSellerId().length()>0) {
-				criteria.andLike("sellerId", "%" + goods.getSellerId() + "%");
+				//精准配备
+				criteria.andEqualTo("sellerId",goods.getSellerId());
 			}
 			//如果字段不为空
 			if (goods.getGoodsName()!=null && goods.getGoodsName().length()>0) {
