@@ -88,19 +88,36 @@ var app = new Vue({
             axios.post(url, this.entity).then(function (response) {
                 alert(response.data.message);
                 if (response.data.success) {
-                    //刷新数据，刷新当前页
+                   /* //刷新数据，刷新当前页
                     app.entity = {goods: {}, goodsDesc: {itemImages:[]}};
 
                     //清除富文本内容
-                    editor.html("");
+                    editor.html("");*/
+                   window.location.href="goods.html";
                 }
             });
         },
         //跟据id查询
-        getById: function (id) {
-            axios.get("../goods/getById.do?id=" + id).then(function (response) {
-                app.entity = response.data;
-            })
+        getById: function () {
+            //获取url上的id
+            let id = this.getUrlParam()["id"];
+            if(id != null){
+                axios.get("../goods/getById.do?id=" + id).then(function (response) {
+                    app.entity = response.data;
+                    //绑定富文本内容
+                    editor.html(response.data.goodsDesc.introduction);
+                    //把图片json字符串转换成对象
+                    app.entity.goodsDesc.itemImages = JSON.parse(app.entity.goodsDesc.itemImages);
+                    //把扩展属性json字符串转换成对象
+                    app.entity.goodsDesc.customAttributeItems = JSON.parse(app.entity.goodsDesc.customAttributeItems);
+                    //把规格json字符串转换成对象
+                    app.entity.goodsDesc.specificationItems = JSON.parse(app.entity.goodsDesc.specificationItems);
+                    //SKU列表规格列转换
+                    for( let i = 0; i < app.entity.itemList.length; i++){
+                        app.entity.itemList[i].spec = JSON.parse(app.entity.itemList[i].spec);
+                    }
+                });
+            }
         },
         //批量删除数据
         dele: function () {
@@ -172,6 +189,52 @@ var app = new Vue({
             }
             return null;
         },
+        /**
+         * 解析一个url中所有的参数
+         * @return {参数名:参数值}
+         */
+        getUrlParam:function() {
+            //url上的所有参数
+            var paramMap = {};
+            //获取当前页面的url
+            var url = document.location.toString();
+            //获取问号后面的参数
+            var arrObj = url.split("?");
+            //如果有参数
+            if (arrObj.length > 1) {
+                //解析问号后的参数
+                var arrParam = arrObj[1].split("&");
+                //读取到的每一个参数,解析成数组
+                var arr;
+                for (var i = 0; i < arrParam.length; i++) {
+                    //以等于号解析参数：[0]是参数名，[1]是参数值
+                    arr = arrParam[i].split("=");
+                    if (arr != null) {
+                        paramMap[arr[0]] = arr[1];
+                    }
+                }
+            }
+            return paramMap;
+        },
+        /**
+         * 验证规格选项是否要勾选
+         * @param specName 规格名称
+         * @param optionName 规格项名称
+         * @returns {查询找结果}
+         */
+        checkAttributeValue : function (specName,optionName) {
+            var item = this.entity.goodsDesc.specificationItems;
+            //先查询规格名称是否存在
+            var spec = this.searchObjectByKey(item, 'attributeName', specName);
+            if(spec != null ){
+                //如果找到了相应规格项，注意此处是>-1
+                if(spec.attributeValue.indexOf(optionName) > -1){
+                    return true;
+                }
+            }
+            return false;
+        },
+
         /**
          * 页面上规格checkbox点击事件
          * 记录用户勾中的规格列表
@@ -278,10 +341,13 @@ var app = new Vue({
                 axios.get("/typeTemplate/getById.do?id=" + newValue).then(function (response) {
                     //把品牌json串转成数组对象
                     app.brandIds = JSON.parse(response.data.brandIds);
-                    //把扩展属性json串转成数组对象
-                    //扩展属性列表
-                    app.entity.goodsDesc.customAttributeItems = JSON.parse(response.data.customAttributeItems);
-
+                    //获取url参数
+                    let id = app.getUrlParam()["id"];
+                    if(id==null) {
+                        //把扩展属性json串转成数组对象
+                        //扩展属性列表
+                        app.entity.goodsDesc.customAttributeItems = JSON.parse(response.data.customAttributeItems);
+                    }
                     //根据模板id查询规格与选项列表
                     //c哈希规格的列表
                     axios.get("/typeTemplate/findSpecList.do?id=" + newValue).then(function (response) {
@@ -299,6 +365,8 @@ var app = new Vue({
         this.findItemCatList(0,1);
         //查询所有的分类
         this.findAllItemCat();
+        //根据id查询商品的信息
+        this.getById();
     }
 });
 //}

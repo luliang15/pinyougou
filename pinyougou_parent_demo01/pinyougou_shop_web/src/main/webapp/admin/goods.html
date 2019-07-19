@@ -48,15 +48,15 @@
 							  </div>
 							  <div class="box-tools pull-right">
 								  <div class="has-feedback">
-									  状态：<select>
+									  状态：<select v-model="searchEntity.auditStatus">
 									  <option value="">全部</option>
 									  <option value="0">未审核</option>
 									  <option value="1">已审核</option>
 									  <option value="2">审核未通过</option>
 									  <option value="3">关闭</option>
 								  </select>
-									  商品名称：<input >
-									  <button class="btn btn-default" >查询</button>
+									  商品名称：<input v-model="searchEntity.goodsName">
+									  <button class="btn btn-default" @click="findPage(1);goPage(1)">查询</button>
 								  </div>
 							  </div>
 							  <!--工具栏/-->
@@ -90,7 +90,8 @@
 									  <td>{{itemCatMap[goods.category3Id]}}</td>
 									  <td>{{status[goods.auditStatus]}}</td>
 									  <td class="text-center">
-										  <button type="button" class="btn bg-olive btn-xs">修改</button>
+                                          <!--修改跳转-->
+                                          <a :href="'goods_edit.html?id='+goods.id" class="btn bg-olive btn-xs">修改</a>
 									  </td>
 								  </tr>
 								  </tbody>

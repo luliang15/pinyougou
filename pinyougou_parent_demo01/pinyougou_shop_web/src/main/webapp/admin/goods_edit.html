@@ -203,7 +203,7 @@
                                     <div class="col-md-2 title">{{spec.text}}</div>
                                     <div class="col-md-10 data">
                                         <span v-for="option in spec.options">
-                                            <input @click="updateSpecAttribute($event,spec.text,option.optionName)" type="checkbox">{{option.optionName}}
+                                           <input :checked="checkAttributeValue(spec.text,option.optionName)" @click="updateSpecAttribute($event,spec.text,option.optionName);createItemList()" type="checkbox">{{option.optionName}}
                                         </span>
                                     </div>
                                 </div>

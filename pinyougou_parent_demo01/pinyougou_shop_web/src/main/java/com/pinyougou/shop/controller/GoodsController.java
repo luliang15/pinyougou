@@ -72,7 +72,17 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/update")
-	public Result update(@RequestBody TbGoods goods){
+	public Result update(@RequestBody Goods goods){
+		//验证修改权限，商家只能修改自己的商品
+		Goods beUpdate = goodsService.getById(goods.getGoods().getId());
+		//获取当前登录用户的id
+		String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
+		//如果当前修改的商品不是当前登录商家的,提示操作非法
+		if (!sellerId.equals(beUpdate.getGoods().getSellerId()) ||
+				!sellerId.equals(goods.getGoods().getSellerId())) {
+			return new Result(false, "非法操作！！！");
+		}
+
 		try {
 			goodsService.update(goods);
 			return new Result(true, "修改成功");
@@ -88,8 +98,8 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/getById")
-	public TbGoods getById(Long id){
-		return goodsService.getById(id);		
+	public Goods getById(Long id){
+		return goodsService.getById(id);
 	}
 	
 	/**

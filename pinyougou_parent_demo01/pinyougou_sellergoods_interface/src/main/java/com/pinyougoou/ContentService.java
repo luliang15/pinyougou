@@ -3,6 +3,7 @@ import java.util.List;
 
 import com.pinyougou.entity.PageResult;
 import com.pinyougou.pojo.TbContent;
+import com.pinyougou.pojogroup.Goods;
 
 
 /**
@@ -51,6 +52,8 @@ public interface ContentService {
 	 * @param ids
 	 */
 	public void delete(Long[] ids);
+
+
 
 	
 }
