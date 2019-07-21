@@ -47,4 +47,5 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         map.put("rows", page.getContent());
         return map;
     }
+
 }

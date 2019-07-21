@@ -16,6 +16,8 @@
     <script src="/plugins/Vue/axios-0.18.0.js"></script>
     <!--引入Vue前端逻辑JS-->
     <script src="/js/controller/searchController.js"></script>
+    <!--分页插件-->
+    <script src="/plugins/Vue/pagination.js"></script>
 
 </head>
 
@@ -439,6 +441,7 @@
                           页 <button class="page-confirm" href="javascript:;">确定</button>
                         </span>
                     </p>
+                    搜索结果：{{resultMap.total}}条记录
                 </div>
             </div>
             <!--hotsale-->

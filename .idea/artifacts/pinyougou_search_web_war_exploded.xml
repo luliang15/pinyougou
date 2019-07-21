@@ -59,6 +59,7 @@
           </element>
           <element id="library" level="project" name="Maven: javax.persistence:persistence-api:1.0" />
           <element id="library" level="project" name="Maven: org.apache.lucene:lucene-core:7.2.1" />
+          <element id="library" level="project" name="Maven: com.alibaba:druid:1.0.9" />
         </element>
       </element>
       <element id="directory" name="META-INF">

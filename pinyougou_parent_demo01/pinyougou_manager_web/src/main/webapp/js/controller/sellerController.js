@@ -78,7 +78,7 @@ window.onload=function () {
             },
             //审核商家
             updateStatus:function (sellerId,status) {
-                this.entity = {"sellerId":sellerId, "status": status};
+                this.entity = {"sellerId":sellerId, "status":status};
                 //审核
                 this.add();
             }

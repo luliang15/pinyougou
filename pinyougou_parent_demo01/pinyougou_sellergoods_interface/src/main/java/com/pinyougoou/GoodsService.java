@@ -32,8 +32,6 @@ public interface GoodsService {
 	 * 增加
 	 */
 	public void add(Goods goods);
-
-
 	/**
 	 * 修改
 	 */
@@ -54,5 +52,5 @@ public interface GoodsService {
 	 */
 	public void delete(Long [] ids);
 
-
+	void updateStatus(Long[] ids, String status);
 }

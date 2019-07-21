@@ -55,7 +55,6 @@ public class GoodsController {
 			//获取商家的id
 			String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
 			goods.getGoods().setSellerId(sellerId);
-
 			goodsService.add(goods);
 			return new Result(true, "增加成功");
 		} catch (Exception e) {
@@ -63,7 +62,6 @@ public class GoodsController {
 			return new Result(false, "增加失败");
 		}
 	}
-
 	/**
 	 * 修改
 	 * @param goods

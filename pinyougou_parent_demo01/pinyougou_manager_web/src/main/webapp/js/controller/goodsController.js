@@ -48,7 +48,7 @@ window.onload = function () {
             //新增
             add: function () {
                 var url = "../goods/add.do";
-                if (this.entity.id != null) {
+                if (this.entity.sellerId != null) {
                     url = "../goods/update.do";
                 }
                 axios.post(url, this.entity).then(function (response) {
@@ -108,6 +108,12 @@ window.onload = function () {
                         alert(response.data.message);
                     }
                 })
+            },
+            //审核操作
+            Operation:function (sellerId,status) {
+                this.entity={"sellerId":sellerId,"status":status};
+                //审核
+                this.add1();
             }
         },
         //Vue对象初始化后，调用此逻辑

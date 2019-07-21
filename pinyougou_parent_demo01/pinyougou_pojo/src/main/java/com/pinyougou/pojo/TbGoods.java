@@ -102,7 +102,6 @@ public class TbGoods implements Serializable {
     private String isDelete;
 
     private static final long serialVersionUID = 1L;
-    //private Long goodsId;
 
     /**
      * 获取主键
@@ -418,10 +417,4 @@ public class TbGoods implements Serializable {
         sb.append("]");
         return sb.toString();
     }
-
-
-    /*@Transient
-    public void setGoodsId(Long goodsId) {
-        this.goodsId = goodsId;
-    }*/
 }

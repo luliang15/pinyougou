@@ -1,5 +1,7 @@
 package com.pinyougou.service;
 
+import com.pinyougou.entity.Item;
+
 import java.util.Map;
 
 /**
@@ -16,4 +18,5 @@ public interface ItemSearchService {
      * @param searchMap
      */
     public Map search(Map searchMap);
+
 }
