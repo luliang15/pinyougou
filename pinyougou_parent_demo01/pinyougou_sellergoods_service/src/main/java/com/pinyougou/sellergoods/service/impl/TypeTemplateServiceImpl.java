@@ -16,6 +16,8 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.pinyougou.mapper.TbTypeTemplateMapper;
 import com.pinyougou.pojo.TbTypeTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
+
 /**
  * 业务逻辑实现
  * @author Steven
@@ -78,8 +80,31 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 		//获取总页数
 		PageInfo<TbTypeTemplate> info = new PageInfo<TbTypeTemplate>(list);
 		result.setPages(info.getPages());
+		//更新缓冲-品牌与规格
+		saveToRedis();
 
 		return result;
+	}
+    @Autowired
+	private RedisTemplate redisTemplate;
+	/**
+	 * 将数据存入缓存
+	 */
+	private void saveToRedis() {
+		//分别将品牌数据和规格放入缓存(Hash),以模板ID作为key,以品牌列表和规格列表作为值
+		List<TbTypeTemplate> templates=findAll();
+		for (TbTypeTemplate template : templates) {
+			//缓存品牌列表
+			//数组转换成List
+			final List<Map> brandList = JSON.parseArray(template.getBrandIds(), Map.class);
+			//存取把数据取出来
+			redisTemplate.boundHashOps("brandList").put(template.getId(),brandList);
+			//缓冲的规格选项列表
+			final List<Map> specList = findSpecList(template.getId());
+			//把规格进行保存
+			redisTemplate.boundHashOps("specList").put(template.getId(),specList);
+		}
+
 	}
 
 	/**

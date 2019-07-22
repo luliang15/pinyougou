@@ -46,15 +46,15 @@
                         <button @click="updateStatus(1)" type="button" class="btn btn-default" title="审核通过"><i class="fa fa-check"></i> 审核通过
                         </button>
                         <button @click="updateStatus(2)"  type="button" class="btn btn-default" title="驳回"><i class="fa fa-ban"></i> 驳回</button>
-                        <button type="button" class="btn btn-default" title="刷新"><i class="fa fa-refresh"></i> 刷新
+                        <button type="button" class="btn btn-default" @click="findAll()" title="查询所有"><i class="fa fa-refresh"></i> 刷新
                         </button>
                     </div>
                 </div>
             </div>
             <div class="box-tools pull-right">
                 <div class="has-feedback">
-                    商品名称：<input>
-                    <button class="btn btn-default">查询</button>
+                    商品名称：<input v-model="searchEntity.goodsName">
+                    <button class="btn btn-default" @click="findPage(1);goPage(1)">查询</button>
                 </div>
             </div>
             <!--工具栏/-->
@@ -97,6 +97,7 @@
 
         </div>
         <!-- 数据表格 /-->
+        <!--分页插件-->
         <navigation :pages="pages" :current.sync="pageNo" @navpage="findPage"></navigation>
 
     </div>
