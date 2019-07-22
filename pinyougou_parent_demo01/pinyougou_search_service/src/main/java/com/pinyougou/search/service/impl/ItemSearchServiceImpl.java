@@ -18,7 +18,9 @@ import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilde
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.ResultsExtractor;
 import org.springframework.data.elasticsearch.core.SearchResultMapper;
@@ -220,6 +222,29 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         }
         //4、获取NativeSearchQuery搜索条件对象-builder.build()
         NativeSearchQuery nativeSearchQuery = builder.build();
+        //4.1 分页查询
+        //pageNo:当前页
+        Integer pageNo = searchMap.get("pageNo") == null ? 0 : new Integer(searchMap.get("pageNo").toString()) - 1;
+        //pageSize:每页查询的记录数
+        Integer pageSize = searchMap.get("pageSize") == null ? 10 : new Integer(searchMap.get("pageSize").toString());
+        //设置分页条件
+        nativeSearchQuery.setPageable(PageRequest.of(pageNo, pageSize));
+
+        //4.2排序查询
+        //sort:排序方式-asc|desc
+        String sort = searchMap.get("sort") == null ? "" : searchMap.get("sort").toString();
+        //sortField:排序业务域
+        String sortField = searchMap.get("sortField") == null ? "" : searchMap.get("sortField").toString();
+        if(sort.length() > 0 && sortField.length() > 0){
+            Sort sortWhere = null;
+            if ("ASC".equals(sort.toUpperCase())) {
+                sortWhere = new Sort(Sort.Direction.ASC,sortField);
+            }else {
+                sortWhere = new Sort(Sort.Direction.DESC,sortField);
+            }
+            nativeSearchQuery.addSort(sortWhere);
+        }
+
         //5.查询数据-esTemplate.queryForPage(条件对象,搜索结果对象)
         //AggregatedPage<EsItem> page = elasticsearchTemplate.queryForPage(nativeSearchQuery, EsItem.class);
 
@@ -262,6 +287,8 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         });
         //6、包装结果并返回
         map.put("rows", page.getContent());
+        map.put("total",page.getTotalElements());
+        map.put("totalPages",page.getTotalPages());
         return map;
     }
 }

@@ -87,9 +87,7 @@
                                     <div class="input-append">
                                         <input v-model="searchMap.keyword" type="text" id="autocomplete" type="text"
                                                class="input-error input-xxlarge"/>
-                                        <button @click="search()" class="sui-btn btn-xlarge btn-danger" type="button">
-                                            搜索
-                                        </button>
+                                        <button @click="searchMap.pageNo = 1;search()" class="sui-btn btn-xlarge btn-danger" type="button">搜索</button>
                                     </div>
                                 </form>
                             </div>
@@ -352,22 +350,20 @@
 
                 <div class="manu">
                     <p>
-                        <span class="disabled">«上一页</span>
-                        <a class="current">1</a>
-                        <a>2</a>
-                        <a>3</a>
-                        <a>4</a>
-                        <a>5</a>
-                        <span>...</span>
-                        <span class="next">下一页»</span>
-                        <span>共 0 页&nbsp;</span>
+                        <span :class="searchMap.pageNo == 1 ? 'disabled' : 'next'" @click="queryByPage(searchMap.pageNo - 1)">«上一页</span>
+                        <span v-if="firstDot">...</span>
+                        <a v-for="page in pageLable" @click="queryByPage(page)" :class="searchMap.pageNo == page ? 'current' : ''">{{page}}</a>
+                        <span v-if="lastDot">...</span>
+                        <span :class="searchMap.pageNo == resultMap.totalPages ? 'disabled' : 'next'"  @click="queryByPage(searchMap.pageNo + 1)">下一页»</span>
+                        <span>共 {{resultMap.totalPages}} 页&nbsp;</span>
                         <span>
                           到第
-                          <input type="text" style="width: 50px;" class="page-num">
-                          页 <button class="page-confirm" href="javascript:;">确定</button>
+                          <input v-model="searchMap.pageNo" type="text" style="width: 50px;" class="page-num">
+                          页 <button  @click="queryByPage(searchMap.pageNo)" class="page-confirm" href="javascript:;">确定</button>
                         </span>
                     </p>
                 </div>
+                搜索结果：{{resultMap.total}}条记录
             </div>
             <!--hotsale-->
             <div class="clearfix hot-sale">
