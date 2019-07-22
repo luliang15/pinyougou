@@ -104,4 +104,15 @@ public class GoodsController {
 		}
 	}
 
+	@RequestMapping("updateStatus")
+	public Result updateStatus(Long[] ids, String status){
+		try {
+			goodsService.updateStatus(ids, status);
+			return new Result(true, "操作成功！");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new Result(false, "操作失败！");
+	}
+
 }

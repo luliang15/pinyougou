@@ -94,26 +94,20 @@ window.onload = function () {
                 })
             },
             //批量审核商品
-            updateStatus:function (status) {
-                if(this.ids.length < 1){
+            updateStatus: function (status) {
+                if (this.ids.length < 1) {
                     alert("请先选择要审核的商品！");
                     return;
                 }
                 axios.get("/goods/updateStatus.do?ids=" + this.ids + "&status=" + status).then(function (response) {
-                    if(response.data.success){
+                    if (response.data.success) {
                         app.ids = [];
                         //刷新当前页
                         app.findPage(app.pageNo);
-                    }else{
+                    } else {
                         alert(response.data.message);
                     }
                 })
-            },
-            //审核操作
-            Operation:function (sellerId,status) {
-                this.entity={"sellerId":sellerId,"status":status};
-                //审核
-                this.add1();
             }
         },
         //Vue对象初始化后，调用此逻辑
@@ -124,3 +118,4 @@ window.onload = function () {
         }
     });
 }
+

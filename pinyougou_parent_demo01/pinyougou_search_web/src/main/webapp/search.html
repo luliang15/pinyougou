@@ -176,8 +176,8 @@
             <div class="clearfix selector">
                 <div class="type-wrap">
                     <div class="fl key">商品分类</div>
-                    <div class="fl value">
-                        <a href="#">手机</a> <a href="#">电视</a>
+                    <div class="fl value" v-for="category in resultMap.categoryList">
+                        <a href="javascript:;">{{category}}</a> <a href="#">电视</a>
                     </div>
                     <div class="fl ext"></div>
                 </div>
@@ -373,8 +373,7 @@
                                         <i>{{item.price}}</i>
                                     </strong>
                                 </div>
-                                <div class="attr">
-                                    <em>{{item.title}}</em>
+                                <div class="attr" v-html="item.title">
                                 </div>
                                 <div class="cu">
                                     <em></em>

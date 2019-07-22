@@ -36,8 +36,8 @@ public class EsUtils {
     public void testImporData(){
         final TbItem where = new TbItem();
         //只导入已审核的商品
-        where.setSeller("1");
-        final List<TbItem> items = itemMapper.select(where);
+        //where.setSeller("1");
+        final List<TbItem> items = itemMapper.select(null);
         System.out.println("总共将要导入:"+items.size()+"个商品");
         System.out.println("开始组装导入的数据");
         //es数据实体的列表
