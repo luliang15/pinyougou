@@ -5,8 +5,8 @@ window.onload=function () {
             //查询结果集
             resultMap:{},
             //搜索条件集{keywords: 关键字, category: 商品分类, brand: 品牌,
-            //          spec: {'网络'：'移动4G','机身内存':'64G',price:价格区间,pageNo:当前页,pageSize:查询条数}
-            searchMap:{keyword:'',category:'',brand:'',spec:{},price:'',pageNo:1,pageSize:20},
+            //          spec: {'网络'：'移动4G','机身内存':'64G',price:价格区间,pageNo:当前页,pageSize:查询条数,sortField:排序域名,sort:排序方式asc/desc}
+            searchMap:{keyword:'',category:'',brand:'',spec:{},price:'',pageNo:1,pageSize:10,sortField:'',sort:''},
             //pageLable:[分页标签列表]
             pageLable:[],
             //标识分页插件中是否显示前面的省略号
@@ -115,7 +115,18 @@ window.onload=function () {
 
                 //刷新数据
                 this.search();
-            }
+            },
+            /**
+             * 按价格排序查询
+             * @param sortField 排序域名
+             * @param sort 排序方式 asc|desc
+             */
+            sortSearch:function (sortField,sort) {
+                this.searchMap.sortField=sortField;
+                this.searchMap.sort=sort;
+                //刷新数据
+                this.search();
+            },
 
         },
         created:function () {

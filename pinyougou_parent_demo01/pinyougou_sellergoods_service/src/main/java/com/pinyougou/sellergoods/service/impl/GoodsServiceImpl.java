@@ -119,7 +119,7 @@ public class GoodsServiceImpl implements GoodsService {
         goods.getGoods().setAuditStatus("0");  //新增商品为未审核状态
         goodsMapper.insertSelective(goods.getGoods());
 
-        int i = 1 / 0;
+
         //保存商品扩展信息
         goods.getGoodsDesc().setGoodsId(goods.getGoods().getId());
         goodsDescMapper.insertSelective(goods.getGoodsDesc());

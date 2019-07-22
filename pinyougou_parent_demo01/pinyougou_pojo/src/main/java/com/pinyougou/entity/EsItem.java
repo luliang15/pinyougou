@@ -1,17 +1,17 @@
 package com.pinyougou.entity;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Map;
 
 /**
- * @program:PinYouGou01
- * @description:封装信息es业务的实体
- * @author:Mr.lu
- * @create:2019-07-19 17:40
- **/
+ * 商品信息es业务实体
+ */
 @Document(indexName = "pinyougou", type = "item")
 public class EsItem implements Serializable {
     @Id
@@ -44,6 +44,17 @@ public class EsItem implements Serializable {
     //嵌套域-用于存储规格
     @Field(index = true,type = FieldType.Nested)
     private Map<String,String> spec;
+
+    @Field(store = true, type = FieldType.Date)
+    private Date updateTime;
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 
 
     //...省略gett与sett..
