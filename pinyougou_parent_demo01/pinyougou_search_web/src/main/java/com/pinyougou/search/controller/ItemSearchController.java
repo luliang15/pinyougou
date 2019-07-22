@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-@RequestMapping("item")
+@RequestMapping("/item")
 public class ItemSearchController {
     @Reference
     private ItemSearchService itemSearchService;
 
-    @RequestMapping("search")
+    @RequestMapping("/search")
     public Map<String,Object> search(@RequestBody Map searchMap){
         return itemSearchService.search(searchMap);
     }

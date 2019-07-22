@@ -9,6 +9,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
@@ -195,6 +196,24 @@ public class ItemSearchServiceImpl implements ItemSearchService {
                     boolQueryBuilder.must(QueryBuilders.nestedQuery("spec", QueryBuilders.wildcardQuery(name, specMap.get(key)), ScoreMode.Max));
                 }
             }
+            //3.5价格区间搜索-前端传入price:0-500|500-1000.....
+            String price = searchMap.get("price") == null ? "" : searchMap.get("price").toString();
+            if(price.trim().length() > 0){
+                //以中划线分隔价格:[0,500]
+                String[] split = price.split("-");
+                //价格比较表达式：0 <= price <= 500
+                RangeQueryBuilder priceRange = QueryBuilders.rangeQuery("price");
+                //先处理:price >= 0
+                priceRange.gte(split[0]);
+                //再处理:price <= 500，传入3000-*时，不需要比较
+                if(!"*".equals(split[1])){
+                    priceRange.lte(split[1]);
+                }
+                //追加价格过滤条件
+                boolQueryBuilder.must(priceRange);
+            }
+            //将BoolQueryBuilder设置为过滤查询
+            builder.withFilter(boolQueryBuilder);
 
             //添加过滤条件
             builder.withFilter(boolQueryBuilder);

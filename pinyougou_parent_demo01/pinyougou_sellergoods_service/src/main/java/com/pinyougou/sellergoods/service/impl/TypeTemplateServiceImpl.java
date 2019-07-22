@@ -96,7 +96,7 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 		for (TbTypeTemplate template : templates) {
 			//缓存品牌列表
 			//数组转换成List
-			final List<Map> brandList = JSON.parseArray(template.getBrandIds(), Map.class);
+			List<Map> brandList = JSON.parseArray(template.getBrandIds(), Map.class);
 			//存取把数据取出来
 			redisTemplate.boundHashOps("brandList").put(template.getId(),brandList);
 			//缓冲的规格选项列表

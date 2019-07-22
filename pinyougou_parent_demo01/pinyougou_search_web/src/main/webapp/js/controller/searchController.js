@@ -5,9 +5,8 @@ window.onload=function () {
             //查询结果集
             resultMap:{},
             //搜索条件集{keywords: 关键字, category: 商品分类, brand: 品牌,
-            //          spec: {'网络'：'移动4G','机身内存':'64G'}
-            searchMap:{keyword:'',category:'',brand:'',spec:{}}
-
+            //          spec: {'网络'：'移动4G','机身内存':'64G',price:价格区间}
+            searchMap:{keyword:'',category:'',brand:'',spec:{},price:''}
         },
         methods:{
             search:function () {
@@ -21,7 +20,7 @@ window.onload=function () {
              * @param value 记录值
              */
             addSearchItem:function (key,value) {
-                if(key == "category" || key == "brand"){
+                if(key == "category" || key == "brand" || key == "price"){
                     //this.searchMap[key] = value;
                     //动态对象构建，使用$set
                     app.$set(this.searchMap, key, value);
@@ -36,7 +35,7 @@ window.onload=function () {
              * @param key
              */
             deleteSearchItem:function (key) {
-                if(key == "category" || key == "brand"){
+                if(key == "category" || key == "brand" || key=="price"){
                     //this.searchMap[key] = value;
                     //动态对象构建，使用$set
                     app.$set(this.searchMap, key, '');
