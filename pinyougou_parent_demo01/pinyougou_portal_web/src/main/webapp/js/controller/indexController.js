@@ -3,7 +3,8 @@ window.onload=function () {
         el:"#app",
         data:{
             //广告列表
-            contentList:[]
+            contentList:[],
+            keyword:''
         },
         methods:{
             //加载首页广告列表
@@ -13,6 +14,9 @@ window.onload=function () {
                     //app.contentList[1] = response.data;
                     app.$set(app.contentList,1,response.data);
                 })
+            },
+            search:function () {
+                window.location.href="http://localhost:8084/search.html?keyword="+this.keyword;
             }
         },
         created:function () {

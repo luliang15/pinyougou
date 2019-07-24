@@ -3,7 +3,7 @@ window.onload=function () {
         el:"#app",
         data:{
             //查询结果集
-            resultMap:{},
+            resultMap:{brandList:[]},
             //搜索条件集{keywords: 关键字, category: 商品分类, brand: 品牌,
             //          spec: {'网络'：'移动4G','机身内存':'64G',price:价格区间,pageNo:当前页,pageSize:查询条数,sortField:排序域名,sort:排序方式asc/desc}
             searchMap:{keyword:'',category:'',brand:'',spec:{},price:'',pageNo:1,pageSize:10,sortField:'',sort:''},
@@ -19,6 +19,8 @@ window.onload=function () {
         methods:{
             //搜索
             search:function () {
+                //隐藏品牌列表
+                this.searchKeyword=this.searchMap.keyword;
                 axios.post("/item/search.do", this.searchMap).then(function (response) {
                     app.resultMap = response.data;
                     //刷新分页标签
@@ -127,11 +129,67 @@ window.onload=function () {
                 //刷新数据
                 this.search();
             },
-
+            /**
+             * 识别关键字是否包含品牌
+             * @returns {true|false}
+             */
+            keywordsIsBrand:function () {
+               /* if(this.searchKeyword==''){
+                    return true;
+                }*/
+                for (let i=0;i<this.resultMap.brandList.length;i++){
+                    //如果包含这个品牌
+                    if(this.searchKeyword.indexOf(this.resultMap.brandList[i].text)>-1){
+                        return true;
+                    }
+                }
+                return false;
+            },
+            /**
+             * 解析一个url中所有的参数
+             * @return {参数名:参数值}
+             */
+            getUrlParam:function() {
+                //url上的所有参数
+                var paramMap = {};
+                //获取当前页面的url
+                var url = document.location.toString();
+                //获取问号后面的参数
+                var arrObj = url.split("?");
+                //如果有参数
+                if (arrObj.length > 1) {
+                    //解析问号后的参数
+                    var arrParam = arrObj[1].split("&");
+                    //读取到的每一个参数,解析成数组
+                    var arr;
+                    for (var i = 0; i < arrParam.length; i++) {
+                        //以等于号解析参数：[0]是参数名，[1]是参数值
+                        arr = arrParam[i].split("=");
+                        if (arr != null) {
+                            paramMap[arr[0]] = arr[1];
+                        }
+                    }
+                }
+                return paramMap;
+            },
+            //加载查询字符串
+            loadkeywords:function(){
+                //读取参数
+                let keyword = this.getUrlParam()['keyword'];
+                if(keyword != null){
+                    //decodeURI-把url的中文转换回来
+                    this.searchMap.keyword = decodeURI(keyword);
+                }
+                //查询商品
+                this.search();
+            }
         },
+        //初始化调用
         created:function () {
             //初始化查询所有商品
             this.search();
+            //读取关键字查询
+            this.loadkeywords();
         }
     });
 }

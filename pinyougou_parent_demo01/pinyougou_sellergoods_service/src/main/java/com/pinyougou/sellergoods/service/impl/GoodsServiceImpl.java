@@ -274,4 +274,24 @@ public class GoodsServiceImpl implements GoodsService {
         goodsMapper.updateByExampleSelective(record,example);
     }
 
+    /**
+     * 根据SPU-ID列表和状态,查询SKU列表
+     * @param goodsIds
+     * @param status
+     * @return
+     */
+    @Override
+    public List<TbItem> findItemListByGoodsIdsAndStatus(Long[] goodsIds, String status) {
+        Example example = new Example(TbItem.class);
+        Example.Criteria criteria = example.createCriteria();
+        //查询条件设置-spu列表
+        List longs = Arrays.asList(goodsIds);
+        criteria.andIn("goodsId", longs);
+        //查询条件设置-商品状态
+        criteria.andEqualTo("status", status);
+        //查询结果
+        List<TbItem> items = itemMapper.selectByExample(example);
+        return items;
+    }
+
 }

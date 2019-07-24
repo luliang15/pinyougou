@@ -3,6 +3,7 @@ package com.pinyougou.search.service.impl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
 import com.pinyougou.entity.EsItem;
+import com.pinyougou.es.dao.ItemDao;
 import com.pinyougou.service.ItemSearchService;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
@@ -71,6 +72,26 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         searchBrandAndSpecList(category,map);
 
         return map;
+    }
+
+    /**
+     * 批量导入是数据
+     * @param list
+     */
+    @Autowired
+    private ItemDao itemDao;
+    @Override
+    public void importList(List list) {
+        itemDao.saveAll(list);
+    }
+
+    /**
+     * 根据Id列表删除索引
+     * @param goodsIdList
+     */
+    @Override
+    public void deleteByGoodsId(Long[] goodsIdList) {
+        itemDao.deleteByGoodsIdIn(goodsIdList);
     }
 
     @Autowired

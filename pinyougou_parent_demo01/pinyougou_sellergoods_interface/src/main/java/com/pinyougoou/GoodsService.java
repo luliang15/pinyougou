@@ -5,6 +5,7 @@ import java.util.List;
 import com.pinyougou.entity.PageResult;
 import com.pinyougou.pojo.TbGoods;
 
+import com.pinyougou.pojo.TbItem;
 import com.pinyougou.pojogroup.Goods;
 
 /**
@@ -53,4 +54,12 @@ public interface GoodsService {
 	public void delete(Long [] ids);
 
 	void updateStatus(Long[] ids, String status);
+
+	/**
+	 * 根据SPU-ID列表和状态,查询SKU列表
+	 * @param goodsIds
+	 * @param status
+	 * @return
+	 */
+	public List<TbItem> findItemListByGoodsIdsAndStatus(Long[] goodsIds,String status);
 }

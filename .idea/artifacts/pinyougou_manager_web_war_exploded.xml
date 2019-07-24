@@ -51,14 +51,18 @@
           <element id="library" level="project" name="Maven: org.springframework.data:spring-data-commons:1.12.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-oxm:4.2.6.RELEASE" />
           <element id="library" level="project" name="Maven: org.slf4j:jcl-over-slf4j:1.7.21" />
-          <element id="archive" name="pinyougou_sellergoods_interface-1.0-SNAPSHOT.jar">
-            <element id="module-output" name="pinyougou_sellergoods_interface" />
+          <element id="archive" name="pinyougou_search_interface-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="pinyougou_search_interface" />
           </element>
           <element id="archive" name="pinyougou_pojo-1.0-SNAPSHOT.jar">
             <element id="module-output" name="pinyougou_pojo" />
           </element>
           <element id="library" level="project" name="Maven: javax.persistence:persistence-api:1.0" />
           <element id="library" level="project" name="Maven: org.apache.lucene:lucene-core:7.2.1" />
+          <element id="library" level="project" name="Maven: com.alibaba:druid:1.0.9" />
+          <element id="archive" name="pinyougou_sellergoods_interface-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="pinyougou_sellergoods_interface" />
+          </element>
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:4.1.0.RELEASE" />
           <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:4.1.0.RELEASE" />
