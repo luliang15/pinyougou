@@ -100,6 +100,11 @@ public class ContentController {
 		}
 	}
 
+	/**
+	 * 按类别ID进行查找
+	 * @param categoryId
+	 * @return
+	 */
 	@RequestMapping("findByCategoryId")
 	public List<TbContent> findByCategoryId(Long categoryId){
 		return contentService.findByCategoryId(categoryId);
