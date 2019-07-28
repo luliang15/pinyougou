@@ -4,7 +4,7 @@ window.onload=function () {
         data:{
             //广告列表
             contentList:[],
-            keyword:''
+            keyword:""
         },
         methods:{
             //加载首页广告列表
@@ -16,7 +16,7 @@ window.onload=function () {
                 })
             },
             search:function () {
-                window.location.href="http://localhost:8084/search.html?keyword="+this.keyword;
+                window.location.href = "http://localhost:8084/search.html?keyword=" + this.keyword;
             }
         },
         created:function () {

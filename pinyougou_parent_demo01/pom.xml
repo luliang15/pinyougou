@@ -46,6 +46,7 @@
         <commons-fileupload.version>1.3.1</commons-fileupload.version>
         <freemarker.version>2.3.23</freemarker.version>
         <ik.version>2012_u6</ik.version>
+        <lombok.version>1.16.10</lombok.version>
     </properties>
 
     <dependencyManagement>

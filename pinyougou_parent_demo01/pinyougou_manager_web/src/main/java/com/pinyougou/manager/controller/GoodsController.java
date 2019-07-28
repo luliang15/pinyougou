@@ -1,23 +1,24 @@
 package com.pinyougou.manager.controller;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
 import com.pinyougoou.GoodsService;
 import com.pinyougou.entity.EsItem;
+import com.pinyougou.entity.MessageInfo;
 import com.pinyougou.entity.PageResult;
 import com.pinyougou.entity.Result;
-import com.pinyougou.page.service.ItemPageService;
+import com.pinyougou.manager.utils.MessageSender;
+import com.pinyougou.pojo.TbGoods;
 import com.pinyougou.pojo.TbItem;
 import com.pinyougou.pojogroup.Goods;
-import com.pinyougou.service.ItemSearchService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.alibaba.dubbo.config.annotation.Reference;
-import com.pinyougou.pojo.TbGoods;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 /**
  * 请求处理器
  * @author Steven
@@ -29,11 +30,6 @@ public class GoodsController {
 
     @Reference
     private GoodsService goodsService;
-    @Reference
-    private ItemSearchService itemSearchService;
-    @Reference
-    private ItemPageService itemPageService;
-
     /**
      * 返回全部列表
      * @return
@@ -105,13 +101,27 @@ public class GoodsController {
         try {
             goodsService.delete(ids);
             //删除商品同时删除索引库
-            itemSearchService.deleteByGoodsId(ids);
+            //itemSearchService.deleteByGoodsId(ids);
+
+            //发送MQ消息到RocketMQ中-新增操作
+            MessageInfo info = new MessageInfo(
+                    MessageInfo.METHOD_DELETE,  //操作业务方式-删除
+                    ids, //发送内容
+                    "topic-goods",  //主题
+                    "tag-goods-add", //标签
+                    "key-goods-add"  //keys
+            );
+            messageSender.sendMessage(info);
+
             return new Result(true, "删除成功");
         } catch (Exception e) {
             e.printStackTrace();
             return new Result(false, "删除失败");
         }
     }
+
+    @Autowired
+    private MessageSender messageSender;
 
     @RequestMapping("updateStatus")
     public Result updateStatus(Long[] ids, String status){
@@ -138,12 +148,18 @@ public class GoodsController {
                     esItemList.add(esItem);
                 }
                 //更新索引库
-                itemSearchService.importList(esItemList);
+                //itemSearchService.importList(esItemList);
 
-                //生成商品静态详情页
-                for (Long id : ids) {
-                    itemPageService.genItemHtml(id);
-                }
+                //发送MQ消息到RocketMQ中-新增操作
+                MessageInfo info = new MessageInfo(
+                        MessageInfo.METHOD_ADD,  //操作业务方式-新增
+                        esItemList, //发送内容
+                        "topic-goods",  //主题
+                        "tag-goods-add", //标签
+                        "key-goods-add"  //keys
+                );
+                messageSender.sendMessage(info);
+
             }
             return new Result(true, "操作成功！");
         } catch (Exception e) {
@@ -152,13 +168,9 @@ public class GoodsController {
         return new Result(false, "操作失败！");
     }
 
-    /**
-     * 生成静态页（测试）
-     * @param goodsId
-     */
-    @RequestMapping("/genHtml")
-    public boolean genHtml(Long goodsId){
-        return itemPageService.genItemHtml(goodsId);
-    }
+/**
+ * 生成静态页（测试）
+ * @param goodsId
+ */
 
 }
