@@ -81,6 +81,13 @@
           <element id="archive" name="pinyougou_page_interface-1.0-SNAPSHOT.jar">
             <element id="module-output" name="pinyougou_page_interface" />
           </element>
+          <element id="library" level="project" name="Maven: org.apache.rocketmq:rocketmq-client:4.3.2" />
+          <element id="library" level="project" name="Maven: org.apache.rocketmq:rocketmq-common:4.3.2" />
+          <element id="library" level="project" name="Maven: org.apache.rocketmq:rocketmq-remoting:4.3.2" />
+          <element id="library" level="project" name="Maven: io.netty:netty-all:4.0.42.Final" />
+          <element id="library" level="project" name="Maven: org.apache.rocketmq:rocketmq-logging:4.3.2" />
+          <element id="library" level="project" name="Maven: io.netty:netty-tcnative-boringssl-static:1.1.33.Fork26" />
+          <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.4" />
         </element>
       </element>
       <element id="directory" name="META-INF">

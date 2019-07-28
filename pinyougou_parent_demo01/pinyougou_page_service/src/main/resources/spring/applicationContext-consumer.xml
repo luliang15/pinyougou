@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="defaultMQPushConsumer" class="org.apache.rocketmq.client.consumer.DefaultMQPushConsumer"
+          init-method="start" destroy-method="shutdown">
+        <!--配置组名-->
+        <property name="consumerGroup" value="pinyougou-page-service-consumer-group"/>
+        <!--配置NameServer-->
+        <property name="namesrvAddr" value="127.0.0.1:9876"/>
+        <!--订阅主题-->
+        <property name="subscription">
+            <map>
+                <!--订阅的主题-->
+                <entry key="topic-goods">
+                    <!--订阅所有当前主题下的所有消息-->
+                    <value>*</value>
+                </entry>
+            </map>
+        </property>
+
+        <!--
+            消息模式设置
+            广播模式：BROADCASTING
+            集群模式：CLUSTERING
+        -->
+        <property name="messageModel" value="BROADCASTING"/>
+
+        <!--绑定监听器-->
+        <property name="messageListener" ref="myListenerConcurrently"/>
+    </bean>
+
+    <!--自定义监听器-->
+    <bean id="myListenerConcurrently" class="com.pinyougou.page.listener.EsListenerConcurrently"/>
+</beans>
