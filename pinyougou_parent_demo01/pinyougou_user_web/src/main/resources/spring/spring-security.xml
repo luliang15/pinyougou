@@ -49,7 +49,7 @@
         </authentication-provider>
     </authentication-manager>
     <!-- 认证提供者 -->
-    <beans:bean id="casAuthenticationProvider"     class="org.springframework.security.cas.authentication.CasAuthenticationProvider">
+    <beans:bean id="casAuthenticationProvider"   class="org.springframework.security.cas.authentication.CasAuthenticationProvider">
         <beans:property name="authenticationUserDetailsService">
             <beans:bean class="org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper">
                 <beans:constructor-arg ref="userDetailsService" />
