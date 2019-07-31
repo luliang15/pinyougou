@@ -8,7 +8,7 @@
     <http pattern="/img/**" security="none"/>
     <http pattern="/js/**" security="none"/>
     <http pattern="/plugins/**" security="none"/>
-
+    <!--拦截器地址-->
     <http pattern="/cart.html" security="none"/>
     <!--放行后，不会再执行SpringSecurity所有其它过滤器-->
     <!--<http pattern="/cart/**" security="none"/>-->
