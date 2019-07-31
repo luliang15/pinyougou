@@ -12,14 +12,19 @@ window.onload=function () {
             findCartList:function () {
                 axios.get("/cart/findCartList.do").then(function (response) {
                     app.cartList = response.data;
-
+                     //每次查询重新计算金额与数量
+                    app.totalValue={totalNum:0,totalMoney:0.00};
                     //重新计算统计数据
                     for(let i = 0; i < app.cartList.length; i++){
                         let cart = app.cartList[i];
                         for(let j = 0; j < cart.orderItemList.length; j++){
+                            //读取购物车明细,统计数量与金额
+                            let orderItem=cart.orderItemList[j];
                             //计算数量与金额
-                            app.totalValue.totalNum += cart.orderItemList[j].num;
-                            app.totalValue.totalMoney += cart.orderItemList[j].totalFee;
+                            app.totalValue.totalNum += orderItem.num;
+                            app.totalValue.totalMoney += orderItem.price*orderItem.num;
+                            /*app.totalValue.totalNum += cart.orderItemList[j].num;
+                            app.totalValue.totalMoney += cart.orderItemList[j].totalFee;*/
                         }
                     }
                 });
