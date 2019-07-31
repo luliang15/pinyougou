@@ -10,6 +10,7 @@ import java.util.Map;
 /**
  * @author Steven
  * @version 1.0
+ * 页面显示用户名
  * @description com.pinyougou.user.controller
  * @date 2019-7-28
  */

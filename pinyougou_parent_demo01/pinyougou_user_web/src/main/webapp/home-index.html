@@ -10,8 +10,10 @@
 
     <link rel="stylesheet" type="text/css" href="css/webbase.css"/>
     <link rel="stylesheet" type="text/css" href="css/pages-seckillOrder.css"/>
+    <!--引入Vue相关的JS-->
     <script src="plugins/Vue/vuejs-2.5.16.js"></script>
     <script src="plugins/Vue/axios-0.18.0.js"></script>
+    <!--引入Vue前端逻辑JS-->
     <script src="js/controller/indexController.js"></script>
 </head>
 
@@ -159,6 +161,7 @@
                     <div class="person-info">
                         <div class="person-photo"><img src="img/_/photo.png" alt=""></div>
                         <div class="person-account">
+                            <!--用户登录名-->
                             <span class="name">{{loginName}}</span>
                             <span class="safe"><a href="/logout/cas">退出登录 </a></span>
                         </div>
@@ -265,7 +268,6 @@
                                             </ul>
                                         </td>
                                     </tr>
-
 
                                     </tbody>
                                 </table>

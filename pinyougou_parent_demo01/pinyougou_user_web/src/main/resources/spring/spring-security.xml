@@ -3,6 +3,7 @@
              xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
                   http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+    <!--匿名资源访问-->
     <http pattern="/css/**" security="none"/>
     <http pattern="/fonts/**" security="none"/>
     <http pattern="/img/**" security="none"/>
@@ -33,6 +34,7 @@
         <beans:property name="loginUrl" value="http://localhost:8087/cas/login"/>
         <beans:property name="serviceProperties" ref="serviceProperties"/>
     </beans:bean>
+    <!--设置服务器地址属性-->
     <beans:bean id="serviceProperties" class="org.springframework.security.cas.ServiceProperties">
         <!--service 配置自身工程的根地址+/login/cas   -->
         <beans:property name="service" value="http://localhost:8086/login/cas"/>
