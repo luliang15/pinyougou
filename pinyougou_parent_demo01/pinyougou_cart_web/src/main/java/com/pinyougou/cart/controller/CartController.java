@@ -9,6 +9,7 @@ import com.pinyougou.pojogroup.Cart;
 import com.pinyougou.utils.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,33 +36,33 @@ public class CartController {
 
     //查询当前用户的购物车列表 --带合并功能的逻辑
     @RequestMapping("findCartList")
-    public List<Cart> findCartList(){
+    public List<Cart> findCartList() {
         List<Cart> cartList = new ArrayList<>();
         //获取登录名
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         //先把cookie中的购物车信息读取出来
         String cartListStr = CookieUtil.getCookieValue(request, "cartList", true);
-        if(cartListStr != null && cartListStr.length() > 0){
+        if (cartListStr != null && cartListStr.length() > 0) {
             //把json串转换为List<Cart>
             cartList = JSON.parseArray(cartListStr, Cart.class);
         }
         //未登录
-        if("anonymousUser".equals(username)){
+        if ("anonymousUser".equals(username)) {
             System.out.println("从Cookie中读取了购物车数据....");
-        }else{
+        } else {
             System.out.println("从Redis中读取了购物车数据....");
             //登录版本购物车查询方案....查询redis
             List<Cart> cartListFromRedis = cartService.findCartListFromRedis(username);
             //如果cookie中存在购物车数据
-            if(cartList.size() > 0){
+            if (cartList.size() > 0) {
                 System.out.println("合并了购物车....");
                 //开始合并........合并后，要把合并的结果返回，并接收作为返回值
                 cartList = cartService.mergeCartList(cartList, cartListFromRedis);
                 //保存合并后的结果，保存到redis中
                 cartService.saveCartListToRedis(username, cartList);
                 //清除cookie中的购物车数据
-                CookieUtil.deleteCookie(request,response,"cartList");
-            }else{
+                CookieUtil.deleteCookie(request, response, "cartList");
+            } else {
                 cartList = cartListFromRedis;
             }
         }
@@ -70,8 +71,15 @@ public class CartController {
 
     //增删改购物车逻辑
     @RequestMapping("addGoodsToCartList")
-    public Result addGoodsToCartList(Long itemId, Integer num){
+    @CrossOrigin(origins="http://localhost:8085",allowCredentials="true")
+    public Result addGoodsToCartList(Long itemId, Integer num) {
         try {
+            //服务器允许跨域
+            //设置可以访问的域,值设置为*时,允许所有的域
+            //response.setHeader("Access-Control-Allow-Origin", "http://localhost:8085");
+            //如果需要操作cookies，必须加上此配置，标识服务端可以写cookies，
+            // 并且Access-Control-Allow-Origin不能设置为*，因为cookies操作需要域名
+            //response.setHeader("Access-Control-Allow-Credentials", "true");
             //查询当前用户的购物车列表
             List<Cart> cartList = this.findCartList();
             //增删改逻辑调用
@@ -79,12 +87,12 @@ public class CartController {
             //获取登录名
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             //未登录
-            if("anonymousUser".equals(username)){
+            if ("anonymousUser".equals(username)) {
                 System.out.println("操作了Cookie中的购物车数据....");
                 String jsonString = JSON.toJSONString(cartList);
                 //把商品信息存入cookie
-                CookieUtil.setCookie(request,response,"cartList",jsonString,60*60*24,true);
-            }else{
+                CookieUtil.setCookie(request, response, "cartList", jsonString, 60 * 60 * 24, true);
+            } else {
                 System.out.println("操作了Redis中的购物车数据....");
                 //保存购物车到redis
                 cartService.saveCartListToRedis(username, cartList);
@@ -93,7 +101,7 @@ public class CartController {
         } catch (RuntimeException e) {
             e.printStackTrace();
             return new Result(false, e.getMessage());
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return new Result(false, "操作失败！");

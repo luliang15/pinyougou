@@ -35,6 +35,7 @@ window.onload=function () {
              * @param num 修改的数量
              */
             addGoodsToCartList:function (itemId,num) {
+
                 axios.get("/cart/addGoodsToCartList.do?itemId=" + itemId + "&num=" + num)
                     .then(function (response) {
                     if(response.data.success){

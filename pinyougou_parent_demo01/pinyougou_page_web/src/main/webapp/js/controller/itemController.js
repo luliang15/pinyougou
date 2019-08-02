@@ -71,10 +71,20 @@ window.onload = function () {
                 //如果没有匹配的
                 this.sku = {id: 0, title: '--------', price: 0};
             },
-           //添加购物车
+            /**
+             * num:购买数量
+             */
+            //添加购物车
             addToCart: function () {
-                //先打印出来看看，后续课程使用到
-                alert('skuid:' + this.sku.id);
+                axios.get('http://localhost:8088/cart/addGoodsToCartList.do?itemId='
+                    + this.sku.id +'&num='+this.num,{'withCredentials':true}).then(function (response) {
+                    if(response.data.success){
+                        //跳转到购物车页面
+                        window.location.href='http://localhost:8088/cart.html';
+                    }else{
+                        alert(response.data.message);
+                    }
+                });
             }
         },
         created: function () {
