@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>qucode入门案例</title>
+    <script type="text/javascript" src="plugins/qrcode.min.js"></script>
+</head>
+<body>
+<div id="qrcode"></div>
+<script type="text/javascript">
+    var qrcode = new QRCode(document.getElementById("qrcode"), {
+        /*内容*/
+        text: "http://www.baidu.com",
+        /*宽度*/
+        width: 200,
+        /*高度*/
+        height: 200,
+        /*颜色*/
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        /*二维码的级别*/
+        correctLevel: QRCode.CorrectLevel.H
+    });
+</script>
+</body>
+</html>
