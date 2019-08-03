@@ -76,4 +76,6 @@
     <dubbo:application name="pinyougou-shop-web" />
     <dubbo:registry address="zookeeper://192.168.218.128:2181"/>
     <dubbo:annotation package="com.pinyougou.shop.service" />
+    <!--消费者关闭所有的服务的启动时检查-->
+    <dubbo:consumer check="false"/>
 </beans:beans>

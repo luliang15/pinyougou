@@ -13,8 +13,7 @@
     <!--引入Vue相关JS-->
     <script src="/plugins/Vue/vuejs-2.5.16.js"></script>
     <script src="/plugins/Vue/axios-0.18.0.js"></script>
-    <!--引入Vue前端逻辑JS-->
-    <script src="/js/controller/cartController.js"></script>
+
 </head>
 
 <body>
@@ -71,7 +70,6 @@
                     <div class="yui3-u-1-8">操作</div>
                 </div>
                 <div class="cart-item-list" v-for="cart in cartList">
-                    <!--名字-->
                     <div class="cart-shop">
                         <input type="checkbox"/>
                         <span class="shopname self">{{cart.sellerName}}</span>
@@ -423,6 +421,8 @@
 <script type="text/javascript" src="js/plugins/jquery.easing/jquery.easing.min.js"></script>
 <script type="text/javascript" src="js/plugins/sui/sui.min.js"></script>
 <script type="text/javascript" src="js/widget/nav.js"></script>
+<!--引入Vue前端逻辑JS-->
+<script src="/js/controller/cartController.js"></script>
 </body>
 
 </html>
