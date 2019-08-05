@@ -21,10 +21,10 @@ public class WeixinPayServiceImpl implements WeixinPayService {
     @Value("${appid}")
     private String appid;
     //商家号id
-    @Value("{partner}")
+    @Value("${partner}")
     private  String partner;
     //回调地址
-    @Value("{notifyurl}")
+    @Value("${notifyurl}")
     private String notifyurl;
     //支付密钥
     @Value("${partnerkey}")
@@ -60,7 +60,7 @@ public class WeixinPayServiceImpl implements WeixinPayService {
             map.put("total_fee", total_fee);//总金额
             map.put("out_trade_no",out_trade_no);//订单号
             return map;
-        } catch (Exception e) {
+        } catch (Exception e ) {
             e.printStackTrace();
         }
         return null;

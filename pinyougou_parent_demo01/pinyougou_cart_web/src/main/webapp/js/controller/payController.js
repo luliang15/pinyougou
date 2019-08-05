@@ -73,6 +73,7 @@ window.onload=function () {
             }
 
         },
+        //初始化调用
         created:function () {
             //只有在支付页才会生成二维码
             if(window.location.href.indexOf("pay.html") > -1){
