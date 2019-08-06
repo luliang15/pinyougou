@@ -107,6 +107,12 @@
             <artifactId>pinyougou_content_interface</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <!--秒杀商品接口依赖-->
+        <dependency>
+            <groupId>com.pinyougou</groupId>
+            <artifactId>pinyougou_seckill_interface</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
         <!--安全框架-->
         <!-- 身份验证 -->

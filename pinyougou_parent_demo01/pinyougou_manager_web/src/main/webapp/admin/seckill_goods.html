@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- 页面meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>商品管理</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+
+    <!--引入Vue相关JS-->
+    <script src="../plugins/Vue/vuejs-2.5.16.js"></script>
+    <script src="../plugins/Vue/axios-0.18.0.js"></script>
+
+    <!--分页插件-->
+    <script src="../plugins/Vue/pagination.js"></script>
+    <script src="../js/controller/seckillGoodsController.js"></script>
+
+</head>
+
+<body class="hold-transition skin-red sidebar-mini">
+<!-- .box-body -->
+<div id="app">
+    <div class="box-header with-border">
+        <h3 class="box-title">商品审核</h3>
+    </div>
+
+    <div class="box-body">
+
+        <!-- 数据表格 -->
+        <div class="table-box">
+
+            <!--工具栏-->
+            <div class="pull-left">
+                <div class="form-group form-inline">
+                    <div class="btn-group">
+                        <button @click="dele()" type="button" class="btn btn-default" title="删除"><i class="fa fa-trash-o"></i> 删除
+                        </button>
+                        <button @click="updateStatus(1)" type="button" class="btn btn-default" title="审核通过"><i class="fa fa-check"></i> 审核通过
+                        </button>
+                        <button @click="updateStatus(2)"  type="button" class="btn btn-default" title="驳回"><i class="fa fa-ban"></i> 驳回</button>
+                        <button type="button" class="btn btn-default" title="刷新"><i class="fa fa-refresh"></i> 刷新
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="box-tools pull-right">
+                <div class="has-feedback">
+                    商品名称：<input>
+                    <button class="btn btn-default">查询</button>
+                </div>
+            </div>
+            <!--工具栏/-->
+
+            <!--数据列表-->
+            <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
+                <thead>
+                <tr>
+                    <th class="" style="padding-right:0px">
+                        <input id="selall" type="checkbox" class="icheckbox_square-blue">
+                    </th>
+                    <th class="sorting_asc">商品ID</th>
+                    <th class="sorting">商品名称</th>
+                    <th class="sorting">原价</th>
+                    <th class="sorting">秒杀价格</th>
+                    <th class="sorting">开始时间</th>
+                    <th class="sorting">结束时间</th>
+                    <th class="sorting">秒杀商品数</th>
+                    <th class="sorting">剩余库存数</th>
+                    <th class="sorting">状态</th>
+                    <th class="text-center">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="goods in list">
+                    <td><input :value="goods.id" v-model="ids" type="checkbox"></td>
+                    <td>{{goods.id}}</td>
+                    <td>{{goods.title}}</td>
+                    <td>{{goods.price}}</td>
+                    <td>{{goods.costPrice}}</td>
+                    <td>{{goods.startTime}}</td>
+                    <td>{{goods.endTime}}</td>
+                    <td>{{goods.num}}</td>
+                    <td>{{goods.stockCount}}</td>
+                    <td>{{goods.status}}</td>
+                    <td class="text-center">
+                        <button type="button" class="btn bg-olive btn-xs">详情</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <!--数据列表/-->
+
+
+        </div>
+        <!-- 数据表格 /-->
+        <navigation :pages="pages" :current.sync="pageNo" @navpage="findPage"></navigation>
+
+    </div>
+    <!-- /.box-body -->
+</div>
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task.xsd">
+    <!--包扫描-->
+    <context:component-scan base-package="com.pinyougou"/>
+
+    <!--开启定时器注解驱动-->
+    <task:annotation-driven scheduler="seckillGoodsScheduler" executor="seckillGoodsExecutor" />
+    <!-- 调度线程池配置，配置任务总数来分配调度线程池的大小 -->
+    <task:scheduler id="seckillGoodsScheduler" pool-size="10"/>
+    <!-- 执行线程池配置，单独某个任务如果要异步的执行时，配置当前任务内的多线程池-->
+    <task:executor id="seckillGoodsExecutor" pool-size="5"/>
+</beans>

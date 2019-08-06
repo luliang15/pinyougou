@@ -75,6 +75,23 @@ window.onload=function () {
 						alert(response.data.message);
 					}
 				})
+			},
+			//批量审核商品
+			updateStatus:function (status) {
+				if(this.ids.length < 1){
+					alert("请先选择要审核的商品！");
+					return;
+				}
+				axios.get("/seckillGoods/updateStatus.do?ids=" + this.ids + "&status=" + status).then(function (response) {
+					if(response.data.success){
+						//清空勾选的ids
+						app.ids = [];
+						//刷新当前页
+						app.findPage(app.pageNo);
+					}else{
+						alert(response.data.message);
+					}
+				})
 			}
 		},
 		//Vue对象初始化后，调用此逻辑

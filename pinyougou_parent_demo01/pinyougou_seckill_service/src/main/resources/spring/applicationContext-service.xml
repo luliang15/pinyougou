@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--dubbo生产者启动时使用的端口，默认是20880-->
+    <dubbo:protocol name="dubbo" port="20889"></dubbo:protocol>
+    <dubbo:application name="pinyougou-seckill-service"/>
+    <dubbo:registry address="zookeeper://192.168.218.128:2181" check="false"/>
+    <dubbo:annotation package="com.pinyougou.seckill.service.impl" />
+    <!--全局参数配置,超时时间：8秒-->
+    <dubbo:provider timeout="8000" retries="0"/>
+
+    <!--抽取ID生成器，便于配置机器与数据中心id-->
+    <bean id="idWorker" class="com.pinyougou.utils.IdWorker">
+        <!-- 工作机器ID -->
+        <constructor-arg index="0" value="0"></constructor-arg>
+        <!-- 数据中心ID -->
+        <constructor-arg index="1" value="2"></constructor-arg>
+    </bean>
+
+    <!--配置FreeMarkerConfigurer-->
+    <bean id="freemarkerConfig"  class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="templateLoaderPath" value="/WEB-INF/ftl/" />
+        <property name="defaultEncoding" value="UTF-8" />
+    </bean>
+
+</beans>
